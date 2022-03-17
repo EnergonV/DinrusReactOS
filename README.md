@@ -40,11 +40,11 @@
 
 ReactOS™ - это Open Source усилие, направленное на разработку качественной операционной системы, совместимой с приложениями и драйверами, написанными для операционных систем семейства Microsoft® Windows™ NT (NT4, 2000, XP, 2003, Vista, Seven).
 
-Проект ReactOS, хоть и сфокусирован в настоящее время на совместимость с Windows Server 2003, всегда держит глаз на совместимость с выпусками Windows Vista и последующих выпусков Windows NT.
+Проект ReactOS, хоть и сфокусирован в настоящее время на совместимость с Windows Server 2003, всегда держит глаз на совместимость с выпусками Windows Vista и последующими выпусками Windows NT.
 
 Код ReactOS имеет лицензию [GNU GPL 2.0](https://github.com/reactos/reactos/blob/master/COPYING).
 
-***ReactOS на данный омент лперационная система качества Alpha. Это означает, что ReactOS проходит трудный этап разработки, что-то можен не правильно работать и от этого могут повредиться данные, сохранённые вами на жёстком диске. Рекомендуется протестировать ReactOS на виртуальной машине или на компьютере, где нет важных или критических данных!***
+***ReactOS на данный момент - это операционная система качества Alpha. Сказанное означает, что ReactOS проходит трудный этап разработки, что-то может неправильно работать и от этого могут повредиться данные, сохранённые вами на жёстком диске. Рекомендуется протестировать ReactOS на виртуальной машине или на компьютере, где нет важных или критических данных!***
 
 ## Построение
 
@@ -59,70 +59,70 @@ ReactOS™ - это Open Source усилие, направленное на ра
 
 Чтобы построить ReactOS, нужно запустить сценарий `configure` из той папки, в которой вы хотите построить её. Выберите `configure.cmd` или `configure.sh`, в зависимости от вашей системы. Затем выполните `ninja <имя_модуля>`, чтобы построить модуль, который вам нужен, либо просто `ninja`, чтобы построить все модули.
 
-### Зашрузочные образы
+### Загрузочные образы
 
 Чтобы построить загрузочный CD образ, запустите `ninja bootcd` из папки
 построения. Будет создан CD образ с названием `bootcd.iso`.
 
 Смотрите ["Построение ReactOS"](https://reactos.org/wiki/Building_ReactOS) для детализации процесса.
 
-Всегда можно загрузить свежие бинарные построения загрузочных образов со страницы ["Daily builds"](https://reactos.org/getbuilds/).
+Всегда можно загрузить свежие бинарные построения загрузочных образов со страницы ["Ежедневные Постройки"](https://reactos.org/getbuilds/).
 
 ## Установка
 
-Изначально ReactOS в настоящее время можно установить на машине, у которой есть отдел FAT16 или FAT32 в качестве активного (загрузочного) отдела.
-Отдел, в который будет устанавливаться ReactOS (который не обязательно должен быть загрузочным отделом), также должен иметь форматировку FAT16 или FAT32.
-ReactOS Setup может при необходимости отфоатировать отделы.
+Изначально и по настоящее время ReactOS устанавливается на машине, у которой имеется отдел FAT16 или FAT32 в качестве активного (загрузочного) отдела.
+Отдел, в который будет устанавливаться ReactOS (последний не обязательно должен быть загрузочным), также должен иметь форматировку FAT16 или FAT32.
+ReactOS Setup может при необходимости форматировать отделы.
 
-Начиная с 0.4.10, ReactOS можно устанавливать с испльзованием файловой системы BtrFS. Но
-эта фича рассматривается как экспериментальная, thus regressions not triggered on
-FAT setup may be observed.
+Начиная с релиза 0.4.10, ReactOS можно устанавливать с использованием файловой системы BtrFS. Но
+эта фича рассматривается как экспериментальная. При её использовании могут наблюдаться регрессии, которые на
+FAT уже устранены.
 
 Чтобы установить ReactOS с загрузочного CD дистрибутива, извлеките содержимое архива. Затем запишите CD образ, загрузитесь с него, и следуйте инструкциям.
 
-Подробности смотрите на ["Установка ReactOS"](https://reactos.org/wiki/Installing_ReactOS) странице Wiki или [INSTALL](INSTALL).
+Подробности смотрите на странице Wiki ["Установка ReactOS"](https://reactos.org/wiki/Installing_ReactOS) или в [INSTALL](INSTALL).
 
 ## Тестирование
 
-If you discover a bug in ReactOS search on JIRA first - it might be reported already. If not report the bug providing logs and as much information as possible.
+Если в ReactOS обнаружится баг, вначале загляните на JIRA - там о нём уже может быть отчёт. Вместо отчёта можно предоставить логи и как можно больше информации.
 
-See ["File Bugs"](https://reactos.org/wiki/File_Bugs) for a guide.
+Руководство можно найти в справке ["Файловые баги"](https://reactos.org/wiki/File_Bugs).
 
-__NOTE:__ The bug tracker is _not_ for discussions. Please use our [official chat](https://chat.reactos.org/) or our [forum](https://reactos.org/forum/).
+__ПРИМЕЧАНИЕ:__ Этот трекер багов _не_ _предназначен_ для дискуссий. Для обсуждений воспользуйтесь нашим [официальным чатом](https://chat.reactos.org/) или [форумом](https://reactos.org/forum/).
 
 ## Вклад  [![prwelcome.badge]](https://reactos.org/wiki/Commiting_Changes)
 
-We are always looking for developers! Check [how to contribute](CONTRIBUTING.md) if you are willing to participate.
+Мы всегда ищем рабработчиков! Изучите [как внести вклад](CONTRIBUTING.md), если у вас есть намерение участвовать в этом процессе.
 
-Try out cloud-based ReactOS development using Gitpod and Docker:
+Испытайте нашу облачную разработку ReactOS, использующую Gitpod и Docker:
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/reactos/reactos)
+[![Открыть в Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/reactos/reactos)
 
-You can also support ReactOS by [donating](https://reactos.org/donate/)! We rely on our backers to maintain our servers and accelerate development by [hiring full-time devs](https://reactos.org/contributing/#paid-jobs).
+Также можно поддержать ReactOS [донатами](https://reactos.org/donate/)! У нас есть желание содержать собственные серверы и ускорить разработку [наймом разработчиков для полнодневного труда](https://reactos.org/contributing/#paid-jobs).
 
 ## Больше информации
 
-ReactOS is a Free and Open Source operating system based on the Windows architecture,
-providing support for existing applications and drivers, and an alternative to the current dominant consumer operating system.
+ReactOS  - это Бесплатная операционная система с Открытым Исходным Кодом, основанная на архитектуре Windows,
+предоставляющая поддержку существующим приложениям и драйверам, и альтернативу текущей доминирующей операционной системе для потребителя.
 
-It is not another wrapper built on Linux, like WINE. It does not attempt or plan to compete with WINE; in fact, the user-mode part of ReactOS is almost entirely WINE-based and our two teams have cooperated closely in the past.
+Это не очередная обёртка, построенная на Linux, подобно WINE. Она не пытается и не планирует соревноваться с WINE; фактически часть пользовательского режима ReactOS почти полностью основана на WINE, и в последнее время две наши команды тесно скооперировались.
 
-ReactOS is also not "yet another OS". It does not attempt to be a third player like any other alternative OS out there. People are not meant to uninstall Linux and use ReactOS instead; ReactOS is a replacement for Windows users who want a Windows replacement that behaves just like Windows.
+ReactOS также не является "ещё одной ОС". Она не пытается стать третьим игроком, как всякие иные операционные системы. Здесь не подразумевается, что люди будут деинсталлировать Linux и вместо неё использовать ReactOS; ReactOS - это замена для пользователей Windows, которым нужна замена Windows, ведущая себя точно так же как Windows.
 
-More information is available at: [reactos.org](https://reactos.org/).
+Подробнее об этом здесь: [reactos.org](https://reactos.org/).
 
-Also see the [media/doc](/media/doc/) subdirectory for some sparse notes.
+Также смотрите [media/doc](/media/doc/) подпапку с некоторыми откровенными примечаниями.
 
 ## Кто несёт ответственность
 
-Active devs are listed as members of [GitHub organization](https://github.com/orgs/reactos/people).
-See also the [CREDITS](CREDITS) file for others.
+Активные разработчики входят в список [GitHub организации](https://github.com/orgs/reactos/people).
+Смотрите также файл [CREDITS](CREDITS), предназначенный для прочих.
 
 ## Зеркала кода
 
-The main development is done on [GitHub](https://github.com/reactos/reactos). We have an [alternative mirror](https://git.reactos.org/?p=reactos.git) in case GitHub is down.
+Главная разработка проводится на сайте [GitHub](https://github.com/reactos/reactos). У нас есть [альтернативное зеркало](https://git.reactos.org/?p=reactos.git), на случай, если GitHub "ляжет".
 
-There is also an obsolete [SVN archive repository](https://svn.reactos.org/reactos/) that is kept for historical purposes.
+Также имеется старая [архивная репозитория SVN](https://svn.reactos.org/reactos/), которая сохраняется в исторических целях.
 
 [travis.badge]:     https://api.travis-ci.org/reactos/reactos.svg?branch=master
 [appveyor.badge]:   https://ci.appveyor.com/api/projects/status/github/reactos/reactos?branch=master&svg=true
