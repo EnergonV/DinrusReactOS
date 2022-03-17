@@ -26,7 +26,7 @@ NTSTATUS GdiThreadDestroy(PETHREAD Thread);
 
 PSERVERINFO gpsi = NULL; // Global User Server Information.
 
-SHORT gusLanguageID;
+USHORT gusLanguageID;
 PPROCESSINFO ppiScrnSaver;
 PPROCESSINFO gppiList = NULL;
 
@@ -420,6 +420,16 @@ UserDeleteW32Thread(PTHREADINFO pti)
    ExFreePoolWithTag(pti, USERTAG_THREADINFO);
 
    IntDereferenceProcessInfo(ppi);
+
+   {
+      // Find another queue for mouse cursor.
+      MSG msg;
+      msg.message = WM_MOUSEMOVE;
+      msg.wParam = UserGetMouseButtonsState();
+      msg.lParam = MAKELPARAM(gpsi->ptCursor.x, gpsi->ptCursor.y);
+      msg.pt = gpsi->ptCursor;
+      co_MsqInsertMouseMessage(&msg, 0, 0, TRUE);
+   }
 }
 
 NTSTATUS
@@ -443,7 +453,6 @@ InitThreadCallback(PETHREAD Thread)
     int i;
     NTSTATUS Status = STATUS_SUCCESS;
     PTEB pTeb;
-    LARGE_INTEGER LargeTickCount;
     PRTL_USER_PROCESS_PARAMETERS ProcessParams;
 
     Process = Thread->ThreadsProcess;
@@ -468,6 +477,7 @@ InitThreadCallback(PETHREAD Thread)
     IntReferenceProcessInfo(ptiCurrent->ppi);
     pTeb->Win32ThreadInfo = ptiCurrent;
     ptiCurrent->pClientInfo = (PCLIENTINFO)pTeb->Win32ClientInfo;
+    ptiCurrent->pcti = &ptiCurrent->cti;
 
     /* Mark the process as having threads */
     ptiCurrent->ppi->W32PF_flags |= W32PF_THREADCONNECTED;
@@ -504,8 +514,7 @@ InitThreadCallback(PETHREAD Thread)
         goto error;
     }
 
-    KeQueryTickCount(&LargeTickCount);
-    ptiCurrent->timeLast = LargeTickCount.u.LowPart;
+    ptiCurrent->pcti->timeLastRead = EngGetTickCount32();
 
     ptiCurrent->MessageQueue = MsqCreateMessageQueue(ptiCurrent);
     if (ptiCurrent->MessageQueue == NULL)
@@ -526,8 +535,6 @@ InitThreadCallback(PETHREAD Thread)
     /* CSRSS threads have some special features */
     if (Process == gpepCSRSS || !gpepCSRSS)
         ptiCurrent->TIF_flags = TIF_CSRSSTHREAD | TIF_DONTATTACHQUEUE;
-
-    ptiCurrent->pcti = &ptiCurrent->cti;
 
     /* Initialize the CLIENTINFO */
     pci = (PCLIENTINFO)pTeb->Win32ClientInfo;

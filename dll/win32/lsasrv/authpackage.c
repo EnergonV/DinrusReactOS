@@ -585,13 +585,22 @@ LsapCallAuthenticationPackage(PLSA_API_MSG RequestMsg,
         }
     }
 
-    Status = Package->LsaApCallPackage((PLSA_CLIENT_REQUEST)LogonContext,
-                                       LocalBuffer,
-                                       RequestMsg->CallAuthenticationPackage.Request.ProtocolSubmitBuffer,
-                                       RequestMsg->CallAuthenticationPackage.Request.SubmitBufferLength,
-                                       &RequestMsg->CallAuthenticationPackage.Reply.ProtocolReturnBuffer,
-                                       &RequestMsg->CallAuthenticationPackage.Reply.ReturnBufferLength,
-                                       &RequestMsg->CallAuthenticationPackage.Reply.ProtocolStatus);
+    if (LogonContext->Untrusted)
+        Status = Package->LsaApCallPackageUntrusted((PLSA_CLIENT_REQUEST)LogonContext,
+                                                    LocalBuffer,
+                                                    RequestMsg->CallAuthenticationPackage.Request.ProtocolSubmitBuffer,
+                                                    RequestMsg->CallAuthenticationPackage.Request.SubmitBufferLength,
+                                                    &RequestMsg->CallAuthenticationPackage.Reply.ProtocolReturnBuffer,
+                                                    &RequestMsg->CallAuthenticationPackage.Reply.ReturnBufferLength,
+                                                    &RequestMsg->CallAuthenticationPackage.Reply.ProtocolStatus);
+    else
+        Status = Package->LsaApCallPackage((PLSA_CLIENT_REQUEST)LogonContext,
+                                           LocalBuffer,
+                                           RequestMsg->CallAuthenticationPackage.Request.ProtocolSubmitBuffer,
+                                           RequestMsg->CallAuthenticationPackage.Request.SubmitBufferLength,
+                                           &RequestMsg->CallAuthenticationPackage.Reply.ProtocolReturnBuffer,
+                                           &RequestMsg->CallAuthenticationPackage.Reply.ReturnBufferLength,
+                                           &RequestMsg->CallAuthenticationPackage.Reply.ProtocolStatus);
     if (!NT_SUCCESS(Status))
     {
         TRACE("Package->LsaApCallPackage() failed (Status 0x%08lx)\n", Status);
@@ -1641,22 +1650,6 @@ LsapLogonUser(PLSA_API_MSG RequestMsg,
         goto done;
     }
 
-    /* Duplicate the token handle into the client process */
-    Status = NtDuplicateObject(NtCurrentProcess(),
-                               TokenHandle,
-                               LogonContext->ClientProcessHandle,
-                               &RequestMsg->LogonUser.Reply.Token,
-                               0,
-                               0,
-                               DUPLICATE_SAME_ACCESS | DUPLICATE_SAME_ATTRIBUTES | DUPLICATE_CLOSE_SOURCE);
-    if (!NT_SUCCESS(Status))
-    {
-        ERR("NtDuplicateObject failed (Status 0x%08lx)\n", Status);
-        goto done;
-    }
-
-//    TokenHandle = NULL;
-
     if (LogonType == Interactive ||
         LogonType == Batch ||
         LogonType == Service)
@@ -1680,12 +1673,41 @@ LsapLogonUser(PLSA_API_MSG RequestMsg,
         goto done;
     }
 
+    /*
+     * Duplicate the token handle into the client process.
+     * This must be the last step because we cannot
+     * close the duplicated token handle in case something fails.
+     */
+    Status = NtDuplicateObject(NtCurrentProcess(),
+                               TokenHandle,
+                               LogonContext->ClientProcessHandle,
+                               &RequestMsg->LogonUser.Reply.Token,
+                               0,
+                               0,
+                               DUPLICATE_SAME_ACCESS | DUPLICATE_SAME_ATTRIBUTES | DUPLICATE_CLOSE_SOURCE);
+    if (!NT_SUCCESS(Status))
+    {
+        ERR("NtDuplicateObject failed (Status 0x%08lx)\n", Status);
+        goto done;
+    }
+
 done:
-//    if (!NT_SUCCESS(Status))
-//    {
-        if (TokenHandle != NULL)
-            NtClose(TokenHandle);
-//    }
+    if (!NT_SUCCESS(Status))
+    {
+        /* Notify the authentification package of the failure */
+        Package->LsaApLogonTerminated(&RequestMsg->LogonUser.Reply.LogonId);
+
+        /* Delete the logon session */
+        LsapDeleteLogonSession(&RequestMsg->LogonUser.Reply.LogonId);
+
+        /* Release the profile buffer */
+        LsapFreeClientBuffer((PLSA_CLIENT_REQUEST)LogonContext,
+                             RequestMsg->LogonUser.Reply.ProfileBuffer);
+        RequestMsg->LogonUser.Reply.ProfileBuffer = NULL;
+    }
+
+    if (TokenHandle != NULL)
+        NtClose(TokenHandle);
 
     /* Free the local groups */
     if (LocalGroups != NULL)
@@ -1779,7 +1801,7 @@ done:
     /* Free the authentication authority */
     if (AuthenticatingAuthority != NULL)
     {
-        if (AuthenticatingAuthority != NULL)
+        if (AuthenticatingAuthority->Buffer != NULL)
             LsapFreeHeap(AuthenticatingAuthority->Buffer);
 
         LsapFreeHeap(AuthenticatingAuthority);

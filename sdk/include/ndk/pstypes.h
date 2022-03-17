@@ -908,6 +908,9 @@ typedef struct _PROCESS_PRIORITY_CLASS
     UCHAR PriorityClass;
 } PROCESS_PRIORITY_CLASS, *PPROCESS_PRIORITY_CLASS;
 
+// Compatibility with windows, see CORE-16757, CORE-17106, CORE-17247
+C_ASSERT(sizeof(PROCESS_PRIORITY_CLASS) == 2);
+
 typedef struct _PROCESS_FOREGROUND_BACKGROUND
 {
     BOOLEAN Foreground;

@@ -67,7 +67,7 @@ LdrpAllocateUnicodeString(IN OUT PUNICODE_STRING StringOut,
     if (Length != UNICODE_STRING_MAX_BYTES)
     {
         /* It's not, so set the maximum length to be one char more */
-        StringOut->MaximumLength = Length + sizeof(UNICODE_NULL);
+        StringOut->MaximumLength = (USHORT)Length + sizeof(UNICODE_NULL);
     }
     else
     {
@@ -1332,7 +1332,7 @@ SkipCheck:
         ImageBase = (ULONG_PTR)NtHeaders->OptionalHeader.ImageBase;
         ImageEnd = ImageBase + ViewSize;
 
-        DPRINT1("LDR: LdrpMapDll Relocating Image Name %ws (%p-%p -> %p)\n", DllName, (PVOID)ImageBase, (PVOID)ImageEnd, ViewBase);
+        DPRINT("LDR: LdrpMapDll Relocating Image Name %ws (%p-%p -> %p)\n", DllName, (PVOID)ImageBase, (PVOID)ImageEnd, ViewBase);
 
         /* Scan all the modules */
         ListHead = &Peb->Ldr->InLoadOrderModuleList;
@@ -1371,7 +1371,7 @@ SkipCheck:
             RtlInitUnicodeString(&OverlapDll, L"Dynamically Allocated Memory");
         }
 
-        DPRINT1("Overlapping DLL: %wZ\n", &OverlapDll);
+        DPRINT("Overlapping DLL: %wZ\n", &OverlapDll);
 
         /* Are we dealing with a DLL? */
         if (LdrEntry->Flags & LDRP_IMAGE_DLL)
@@ -1416,6 +1416,8 @@ SkipCheck:
                 /* Setup for hard error */
                 HardErrorParameters[0] = (ULONG_PTR)&IllegalDll;
                 HardErrorParameters[1] = (ULONG_PTR)&OverlapDll;
+
+                DPRINT1("Illegal DLL relocation! %wZ overlaps %wZ\n", &OverlapDll, &IllegalDll);
 
                 /* Raise the error */
                 ZwRaiseHardError(STATUS_ILLEGAL_DLL_RELOCATION,

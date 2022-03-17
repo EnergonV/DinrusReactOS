@@ -61,6 +61,9 @@ DBG_DEFAULT_CHANNEL(UserScrollbar);
 BOOL APIENTRY
 IntEnableScrollBar(BOOL Horz, PSCROLLBARINFO Info, UINT wArrows);
 
+static void
+IntRefeshScrollInterior(PWND pWnd, INT nBar, PSCROLLBARINFO psbi);
+
 
 /* Ported from WINE20020904 */
 /* Compute the scroll bar rectangle, in drawing coordinates (i.e. client coords for SB_CTL, window coords for SB_VERT and
@@ -273,6 +276,7 @@ co_IntGetScrollInfo(PWND Window, INT nBar, PSBDATA pSBData, LPSCROLLINFO lpsi)
 
    ASSERT_REFS_CO(Window);
 
+   lpsi->fMask &= ~SIF_THEMED;    // Remove Theme bit
    if(!SBID_IS_VALID(nBar))
    {
       EngSetLastError(ERROR_INVALID_PARAMETER);
@@ -331,6 +335,7 @@ NEWco_IntGetScrollInfo(
   UINT Mask;
   PSBTRACK pSBTrack = pWnd->head.pti->pSBTrack;
 
+  lpsi->fMask &= ~SIF_THEMED;         // Remove Theme bit
   if (!SBID_IS_VALID(nBar))
   {
      EngSetLastError(ERROR_INVALID_PARAMETER);
@@ -483,14 +488,19 @@ co_IntSetScrollInfo(PWND Window, INT nBar, LPCSCROLLINFO lpsi, BOOL bRedraw)
    UINT new_flags;
    INT action = 0;
    PSBDATA pSBData;
-   DWORD OldPos = 0;
+   DWORD OldPos = 0, CurrentPos = 0;
    BOOL bChangeParams = FALSE; /* Don't show/hide scrollbar if params don't change */
    UINT MaxPage;
    int MaxPos;
+   /* [0] = SB_HORZ, [1] = SB_VERT, [2] = SB_CTL */
+   static PWND PrevHwnd[3] = { 0 };
+   static DWORD PrevPos[3] = { 0 };
+   static DWORD PrevMax[3] = { 0 };
+   static INT PrevAction[3] = { 0 };
 
    ASSERT_REFS_CO(Window);
 
-   if(!SBID_IS_VALID(nBar))
+   if(!SBID_IS_VALID(nBar)) /* Assures nBar is 0, 1, or 2 */
    {
       EngSetLastError(ERROR_INVALID_PARAMETER);
       ERR("Trying to set scrollinfo for unknown scrollbar type %d", nBar);
@@ -508,7 +518,7 @@ co_IntSetScrollInfo(PWND Window, INT nBar, LPCSCROLLINFO lpsi, BOOL bRedraw)
       EngSetLastError(ERROR_INVALID_PARAMETER);
       return 0;
    }
-   if (lpsi->fMask & ~(SIF_ALL | SIF_DISABLENOSCROLL | SIF_PREVIOUSPOS))
+   if ((lpsi->fMask & ~SIF_THEMED) & ~(SIF_ALL | SIF_DISABLENOSCROLL | SIF_PREVIOUSPOS))
    {
       EngSetLastError(ERROR_INVALID_PARAMETER);
       return 0;
@@ -537,7 +547,6 @@ co_IntSetScrollInfo(PWND Window, INT nBar, LPCSCROLLINFO lpsi, BOOL bRedraw)
          OldPos = Info->nPos;
          Info->nPos = lpsi->nPos;
          pSBData->pos = lpsi->nPos;
-         bChangeParams = TRUE;
       }
    }
 
@@ -595,7 +604,7 @@ co_IntSetScrollInfo(PWND Window, INT nBar, LPCSCROLLINFO lpsi, BOOL bRedraw)
    if (lpsi->fMask & (SIF_RANGE | SIF_PAGE | SIF_DISABLENOSCROLL))
    {
       new_flags = Window->pSBInfo->WSBflags;
-      if (Info->nMin >= (int)(Info->nMax - max(Info->nPage - 1, 0)))
+      if (Info->nMin + (int)max(Info->nPage, 1) > Info->nMax)
       {
          /* Hide or disable scroll-bar */
          if (lpsi->fMask & SIF_DISABLENOSCROLL)
@@ -609,12 +618,16 @@ co_IntSetScrollInfo(PWND Window, INT nBar, LPCSCROLLINFO lpsi, BOOL bRedraw)
          }
       }
       else /* Show and enable scroll-bar only if no page only changed. */
-      if (lpsi->fMask != SIF_PAGE)
+      if ((lpsi->fMask & ~SIF_THEMED) != SIF_PAGE)
       {
-         new_flags = ESB_ENABLE_BOTH;
          if ((nBar != SB_CTL) && bChangeParams)
          {
+            new_flags = ESB_ENABLE_BOTH;
             action |= SA_SSI_SHOW;
+         }
+         else if (nBar == SB_CTL)
+         {
+            new_flags = ESB_ENABLE_BOTH;
          }
       }
 
@@ -626,6 +639,16 @@ co_IntSetScrollInfo(PWND Window, INT nBar, LPCSCROLLINFO lpsi, BOOL bRedraw)
    }
 
 //done:
+   if ((Window != PrevHwnd[nBar]) || (action != PrevAction[nBar]))
+   {
+      if ((action == SA_SSI_SHOW) && (PrevAction[nBar] == SA_SSI_HIDE))
+      {
+         co_UserShowScrollBar(Window, nBar, TRUE, TRUE);
+      }
+   }
+   if ((action != PrevAction[nBar]) && action != 0)
+      PrevAction[nBar] = action;
+
    if ( action & SA_SSI_HIDE )
    {
       co_UserShowScrollBar(Window, nBar, FALSE, FALSE);
@@ -636,13 +659,59 @@ co_IntSetScrollInfo(PWND Window, INT nBar, LPCSCROLLINFO lpsi, BOOL bRedraw)
          if ( co_UserShowScrollBar(Window, nBar, TRUE, TRUE) )
             return lpsi->fMask & SIF_PREVIOUSPOS ? OldPos : pSBData->pos; /* SetWindowPos() already did the painting */
       if (bRedraw)
-      { // FIXME: Arrows and interior.
-         RECTL UpdateRect = psbi->rcScrollBar;
-         UpdateRect.left -= Window->rcClient.left - Window->rcWindow.left;
-         UpdateRect.right -= Window->rcClient.left - Window->rcWindow.left;
-         UpdateRect.top -= Window->rcClient.top - Window->rcWindow.top;
-         UpdateRect.bottom -= Window->rcClient.top - Window->rcWindow.top;
-         co_UserRedrawWindow(Window, &UpdateRect, 0, RDW_INVALIDATE | RDW_FRAME);
+      {
+         if (!(lpsi->fMask & SIF_THEMED)) /* Not Using Themes */
+         {
+            TRACE("Not using themes.\n");
+            if (action & SA_SSI_REPAINT_ARROWS)
+            {
+               // Redraw the entire bar.
+               RECTL UpdateRect = psbi->rcScrollBar;
+               UpdateRect.left -= Window->rcClient.left - Window->rcWindow.left;
+               UpdateRect.right -= Window->rcClient.left - Window->rcWindow.left;
+               UpdateRect.top -= Window->rcClient.top - Window->rcWindow.top;
+               UpdateRect.bottom -= Window->rcClient.top - Window->rcWindow.top;
+               co_UserRedrawWindow(Window, &UpdateRect, 0, RDW_INVALIDATE | RDW_FRAME);
+            }
+            else
+            {
+               // Redraw only the interior part of the bar.
+               IntRefeshScrollInterior(Window, nBar, psbi);
+            }
+         }
+         else  /* Using Themes */
+         {
+            RECTL UpdateRect = psbi->rcScrollBar;
+            TRACE("Using themes.\n");
+            UpdateRect.left -= Window->rcClient.left - Window->rcWindow.left;
+            UpdateRect.right -= Window->rcClient.left - Window->rcWindow.left;
+            UpdateRect.top -= Window->rcClient.top - Window->rcWindow.top;
+            UpdateRect.bottom -= Window->rcClient.top - Window->rcWindow.top;
+            /* Just paint the interior and not the arrows. */
+            if (!(action & SA_SSI_REPAINT_ARROWS))
+            {
+               if (nBar == SB_HORZ)
+               {
+                  UpdateRect.left += psbi->dxyLineButton;
+                  UpdateRect.right -= psbi->dxyLineButton;
+               }
+               if (nBar == SB_VERT)
+               {
+                  UpdateRect.top += psbi->dxyLineButton;
+                  UpdateRect.bottom -= psbi->dxyLineButton;
+               }
+            }
+            CurrentPos = lpsi->fMask & SIF_PREVIOUSPOS ? OldPos : pSBData->pos;
+            /* Check for changes to Window or CurrentPos or lpsi->nMax */
+            if ((Window != PrevHwnd[nBar]) || (CurrentPos != PrevPos[nBar]) ||
+               (lpsi->nMax != PrevMax[nBar]))
+            {
+                co_UserRedrawWindow(Window, &UpdateRect, 0, RDW_INVALIDATE | RDW_FRAME);
+                PrevHwnd[nBar] = Window;
+                PrevPos[nBar] = CurrentPos;
+                PrevMax[nBar] = lpsi->nMax;
+            }
+         }
       } // FIXME: Arrows
 /*      else if( action & SA_SSI_REPAINT_ARROWS )
       {
@@ -1067,6 +1136,21 @@ IntScrollGetObjectId(INT SBType)
    if (SBType == SB_HORZ)
        return OBJID_HSCROLL;
    return OBJID_CLIENT;
+}
+
+static void
+IntRefeshScrollInterior(PWND pWnd, INT nBar, PSCROLLBARINFO psbi)
+{
+   HDC hdc;
+   BOOL Vertical = ((nBar == SB_CTL) ? ((pWnd->style & SBS_VERT) != 0) : (nBar == SB_VERT));
+
+   hdc = UserGetDCEx(pWnd, NULL, DCX_CACHE | ((nBar == SB_CTL) ? 0 : DCX_WINDOW));
+   if (hdc)
+   {  /* Get updated info. */
+      co_IntGetScrollBarInfo(pWnd, IntScrollGetObjectId(nBar), psbi);
+      IntDrawScrollInterior(pWnd, hdc, nBar, Vertical, psbi);
+      UserReleaseDC(pWnd, hdc, FALSE);
+   }
 }
 
 void

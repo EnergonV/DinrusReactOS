@@ -960,7 +960,7 @@ co_WinPosGetMinMaxInfo(PWND Window, POINT* MaxSize, POINT* MaxPos,
 
     // Handle special case while maximized. CORE-15893
     if ((adjustedStyle & WS_THICKFRAME) && !(adjustedStyle & WS_CHILD) && !(adjustedStyle & WS_MINIMIZE))
-         adjust += 2;
+         adjust += 1;
 
     xinc = yinc = adjust;
 
@@ -1053,16 +1053,8 @@ static
 BOOL
 IntValidateParent(PWND Child, PREGION ValidateRgn)
 {
-   PWND ParentWnd = Child;
+   PWND ParentWnd = Child->spwndParent;
 
-   if (ParentWnd->style & WS_CHILD)
-   {
-      do
-         ParentWnd = ParentWnd->spwndParent;
-      while (ParentWnd->style & WS_CHILD);
-   }
-
-   ParentWnd = Child->spwndParent;
    while (ParentWnd)
    {
       if (ParentWnd->style & WS_CLIPCHILDREN)
@@ -1661,6 +1653,68 @@ WinPosFixupFlags(WINDOWPOS *WinPos, PWND Wnd)
    return TRUE;
 }
 
+//
+// This is a NC HACK fix for forcing painting of non client areas.
+// Further troubleshooting in painting.c is required to remove this hack.
+// See CORE-7166 & CORE-15934
+//
+VOID
+ForceNCPaintErase(PWND Wnd, HRGN hRgn, PREGION pRgn)
+{
+   HDC hDC;
+   PREGION RgnUpdate;
+   UINT RgnType;
+   BOOL Create = FALSE;
+
+   if (Wnd->hrgnUpdate == NULL)
+   {
+       Wnd->hrgnUpdate = NtGdiCreateRectRgn(0, 0, 0, 0);
+       IntGdiSetRegionOwner(Wnd->hrgnUpdate, GDI_OBJ_HMGR_PUBLIC);
+       Create = TRUE;
+   }
+
+   if (Wnd->hrgnUpdate != HRGN_WINDOW)
+   {
+       RgnUpdate = REGION_LockRgn(Wnd->hrgnUpdate);
+       if (RgnUpdate)
+       {
+           RgnType = IntGdiCombineRgn(RgnUpdate, RgnUpdate, pRgn, RGN_OR);
+           REGION_UnlockRgn(RgnUpdate);
+           if (RgnType == NULLREGION)
+           {
+               IntGdiSetRegionOwner(Wnd->hrgnUpdate, GDI_OBJ_HMGR_POWNED);
+               GreDeleteObject(Wnd->hrgnUpdate);
+               Wnd->hrgnUpdate = NULL;
+               Create = FALSE;
+           }
+       }
+   }
+
+   IntSendNCPaint( Wnd, hRgn ); // Region can be deleted by the application.
+
+   if (Wnd->hrgnUpdate)
+   {
+       hDC = UserGetDCEx( Wnd,
+                          Wnd->hrgnUpdate,
+                          DCX_CACHE|DCX_USESTYLE|DCX_INTERSECTRGN|DCX_KEEPCLIPRGN);
+
+      Wnd->state &= ~(WNDS_SENDERASEBACKGROUND|WNDS_ERASEBACKGROUND);
+      // Kill the loop, so Clear before we send.
+      if (!co_IntSendMessage(UserHMGetHandle(Wnd), WM_ERASEBKGND, (WPARAM)hDC, 0))
+      {
+          Wnd->state |= (WNDS_SENDERASEBACKGROUND|WNDS_ERASEBACKGROUND);
+      }
+      UserReleaseDC(Wnd, hDC, FALSE);
+   }
+
+   if (Create)
+   {
+      IntGdiSetRegionOwner(Wnd->hrgnUpdate, GDI_OBJ_HMGR_POWNED);
+      GreDeleteObject(Wnd->hrgnUpdate);
+      Wnd->hrgnUpdate = NULL;
+   }
+}
+
 /* x and y are always screen relative */
 BOOLEAN FASTCALL
 co_WinPosSetWindowPos(
@@ -1692,7 +1746,7 @@ co_WinPosSetWindowPos(
 
    ASSERT_REFS_CO(Window);
 
-   TRACE("pwnd %p, after %p, %d,%d (%dx%d), flags %s",
+   TRACE("pwnd %p, after %p, %d,%d (%dx%d), flags 0x%x",
           Window, WndInsertAfter, x, y, cx, cy, flags);
 #if DBG
    dump_winpos_flags(flags);
@@ -1778,7 +1832,7 @@ co_WinPosSetWindowPos(
          }
 
          /* Calculate the non client area for resizes, as this is used in the copy region */
-         if (!(WinPos.flags & SWP_NOSIZE))
+         if ((WinPos.flags & (SWP_NOSIZE | SWP_FRAMECHANGED)) != SWP_NOSIZE)
          {
              VisBeforeJustClient = VIS_ComputeVisibleRegion(Window, TRUE, FALSE,
                  (Window->style & WS_CLIPSIBLINGS) ? TRUE : FALSE);
@@ -1850,11 +1904,23 @@ co_WinPosSetWindowPos(
    }
    else if (WinPos.flags & SWP_SHOWWINDOW)
    {
-       if (UserIsDesktopWindow(Window->spwndParent) &&
-           Window->spwndOwner == NULL &&
-           (!(Window->ExStyle & WS_EX_TOOLWINDOW) ||
-            (Window->ExStyle & WS_EX_APPWINDOW)))
+      if (Window->style & WS_CHILD)
+      {
+         if ((Window->style & WS_POPUP) && (Window->ExStyle & WS_EX_APPWINDOW))
+         {
+            co_IntShellHookNotify(HSHELL_WINDOWCREATED, (WPARAM)Window->head.h, 0);
+            if (!(WinPos.flags & SWP_NOACTIVATE))
+               UpdateShellHook(Window);
+         }
+      }
+      else if ((Window->ExStyle & WS_EX_APPWINDOW) ||
+          (!(Window->ExStyle & WS_EX_TOOLWINDOW) && !Window->spwndOwner &&
+           (!Window->spwndParent || UserIsDesktopWindow(Window->spwndParent))))
+      {
          co_IntShellHookNotify(HSHELL_WINDOWCREATED, (WPARAM)Window->head.h, 0);
+         if (!(WinPos.flags & SWP_NOACTIVATE))
+            UpdateShellHook(Window);
+      }
 
       Window->style |= WS_VISIBLE; //IntSetStyle( Window, WS_VISIBLE, 0 );
       Window->head.pti->cVisWindows++;
@@ -1869,6 +1935,14 @@ co_WinPosSetWindowPos(
    }
 
    DceResetActiveDCEs(Window); // For WS_VISIBLE changes.
+
+   // Change or update, set send non-client paint flag.
+   if ( Window->style & WS_VISIBLE &&
+       (WinPos.flags & SWP_STATECHANGED || (!(Window->state2 & WNDS2_WIN31COMPAT) && WinPos.flags & SWP_NOREDRAW ) ) )
+   {
+      TRACE("Set WNDS_SENDNCPAINT %p\n",Window);
+      Window->state |= WNDS_SENDNCPAINT;
+   }
 
    if (!(WinPos.flags & SWP_NOREDRAW))
    {
@@ -1898,8 +1972,7 @@ co_WinPosSetWindowPos(
              VisAfter != NULL &&
             !(WinPos.flags & SWP_NOCOPYBITS) &&
             ((WinPos.flags & SWP_NOSIZE) || !(WvrFlags & WVR_REDRAW)) &&
-            !(Window->ExStyle & WS_EX_TRANSPARENT) ) || 
-            ( !PosChanged && (WinPos.flags & SWP_FRAMECHANGED) && VisBefore) )
+            !(Window->ExStyle & WS_EX_TRANSPARENT) ) )
       {
 
          /*
@@ -1912,12 +1985,16 @@ co_WinPosSetWindowPos(
           */
 
          CopyRgn = IntSysCreateRectpRgn(0, 0, 0, 0);
-         if (WinPos.flags & SWP_NOSIZE)
+         if ((WinPos.flags & SWP_NOSIZE) && (WinPos.flags & SWP_NOCLIENTSIZE))
             RgnType = IntGdiCombineRgn(CopyRgn, VisAfter, VisBefore, RGN_AND);
          else if (VisBeforeJustClient != NULL)
          {
             RgnType = IntGdiCombineRgn(CopyRgn, VisAfter, VisBeforeJustClient, RGN_AND);
-            REGION_Delete(VisBeforeJustClient);
+         }
+
+         if (VisBeforeJustClient != NULL)
+         {
+             REGION_Delete(VisBeforeJustClient);
          }
 
          /* Now use in copying bits which are in the update region. */
@@ -1987,43 +2064,7 @@ co_WinPosSetWindowPos(
          CopyRgn = NULL;
       }
 
-      if ( !PosChanged && (WinPos.flags & SWP_FRAMECHANGED) && VisBefore )
-      {
-         PWND pwnd = Window;
-         PWND Parent = pwnd->spwndParent;
-
-         TRACE("SWP_FRAMECHANGED no chg\n");
-
-         if ( pwnd->style & WS_CHILD ) // Fix ProgMan menu bar drawing.
-         {
-            TRACE("SWP_FRAMECHANGED win child %p Parent %p\n",pwnd,Parent);
-            pwnd = Parent ? Parent : pwnd;
-         }
-
-         if ( !(pwnd->style & WS_CHILD) )
-         {
-            HDC hdc;
-            HRGN DcRgn = NtGdiCreateRectRgn(0, 0, 0, 0);
-            PREGION DcRgnObj = REGION_LockRgn(DcRgn);
-
-            TRACE("SWP_FRAMECHANGED Draw\n");
-
-            IntGdiCombineRgn(DcRgnObj, VisBefore, NULL, RGN_COPY);
-            REGION_UnlockRgn(DcRgnObj);
-
-            hdc = UserGetDCEx( pwnd,
-                               DcRgn,
-                               DCX_WINDOW|DCX_CACHE|DCX_INTERSECTRGN|DCX_CLIPSIBLINGS|DCX_KEEPCLIPRGN); // DCX_WINDOW, see note above....
-
-            NC_DoNCPaint(pwnd, hdc, -1); // Force full redraw of nonclient area.
-
-            UserReleaseDC(pwnd, hdc, FALSE);
-            IntValidateParent(pwnd, DcRgnObj);
-            GreDeleteObject(DcRgn);
-         }
-      }
-
-      /* We need to redraw what wasn't visible before */
+      /* We need to redraw what wasn't visible before or force a redraw */
       if (VisAfter != NULL)
       {
          PREGION DirtyRgn = IntSysCreateRectpRgn(0, 0, 0, 0);
@@ -2038,7 +2079,7 @@ co_WinPosSetWindowPos(
                 RgnType = IntGdiCombineRgn(DirtyRgn, VisAfter, 0, RGN_COPY);
              }
 
-             if (RgnType != ERROR && RgnType != NULLREGION)
+             if (RgnType != ERROR && RgnType != NULLREGION) // Regions moved.
              {
             /* old code
                 NtGdiOffsetRgn(DirtyRgn, Window->rcWindow.left, Window->rcWindow.top);
@@ -2063,6 +2104,45 @@ co_WinPosSetWindowPos(
                    IntInvalidateWindows( Window, DirtyRgn, RDW_ERASE | RDW_FRAME | RDW_INVALIDATE | RDW_ALLCHILDREN);
                 }
              }
+             else if ( RgnType != ERROR && RgnType == NULLREGION ) // Must be the same. See CORE-7166 & CORE-15934, NC HACK fix.
+             {
+                if ( !PosChanged &&
+                     !(WinPos.flags & SWP_DEFERERASE) &&
+                      (WinPos.flags & SWP_FRAMECHANGED) )
+                {
+                    PWND pwnd = Window;
+                    PWND Parent = Window->spwndParent;
+
+                    if ( pwnd->style & WS_CHILD ) // Fix ProgMan menu bar drawing.
+                    {
+                        TRACE("SWP_FRAMECHANGED win child %p Parent %p\n",pwnd,Parent);
+                        pwnd = Parent ? Parent : pwnd;
+                    }
+
+                    if ( !(pwnd->style & WS_CHILD) )
+                    {
+                        /*
+                         * Check if we have these specific windows style bits set/reset.
+                         * FIXME: There may be other combinations of styles that need this handling as well.
+                         * This fixes the ReactOS Calculator buttons disappearing in CORE-16827.
+                         */
+                        if ((Window->style & WS_CLIPSIBLINGS) && !(Window->style & (WS_POPUP | WS_CLIPCHILDREN | WS_SIZEBOX)))
+                        {
+                            IntSendNCPaint(pwnd, HRGN_WINDOW); // Paint the whole frame.
+                        }
+                        else  // Use region handling
+                        {
+                            HRGN DcRgn = NtGdiCreateRectRgn(0, 0, 0, 0);
+                            PREGION DcRgnObj = REGION_LockRgn(DcRgn);
+                            TRACE("SWP_FRAMECHANGED win %p hRgn %p\n",pwnd, DcRgn);
+                            IntGdiCombineRgn(DcRgnObj, VisBefore, NULL, RGN_COPY);
+                            REGION_UnlockRgn(DcRgnObj);
+                            ForceNCPaintErase(pwnd, DcRgn, DcRgnObj);
+                            GreDeleteObject(DcRgn);
+                        }
+                    }
+                }
+             }
              REGION_Delete(DirtyRgn);
          }
       }
@@ -2073,7 +2153,7 @@ co_WinPosSetWindowPos(
       }
 
       /* Expose what was covered before but not covered anymore */
-      if (VisBefore != NULL)
+      if ( VisBefore != NULL )
       {
          PREGION ExposedRgn = IntSysCreateRectpRgn(0, 0, 0, 0);
          if (ExposedRgn)
@@ -2083,7 +2163,7 @@ co_WinPosSetWindowPos(
                                OldWindowRect.left - NewWindowRect.left,
                                OldWindowRect.top  - NewWindowRect.top);
 
-             if (VisAfter != NULL)
+             if ( VisAfter != NULL )
                 RgnType = IntGdiCombineRgn(ExposedRgn, ExposedRgn, VisAfter, RGN_DIFF);
 
              if (RgnType != ERROR && RgnType != NULLREGION)
@@ -2130,8 +2210,8 @@ co_WinPosSetWindowPos(
        PWND Parent = Window->spwndParent;
        if ( !(Window->style & WS_CHILD) && (Parent) && (Parent->style & WS_CLIPCHILDREN))
        {
-           TRACE("SWP_FRAMECHANGED Parent WS_CLIPCHILDREN\n");
-           UserSyncAndPaintWindows( Parent, RDW_CLIPCHILDREN);
+           TRACE("SWP_FRAMECHANGED Parent %p WS_CLIPCHILDREN %p\n",Parent,Window);
+           UserSyncAndPaintWindows( Parent, RDW_CLIPCHILDREN); // NC should redraw here, see NC HACK fix.
        }
    }
 
@@ -2480,9 +2560,8 @@ co_WinPosShowWindow(PWND Wnd, INT Cmd)
          Swp |= SWP_NOACTIVATE | SWP_NOZORDER;
          /* Fall through. */
       case SW_SHOWMINIMIZED:
+      case SW_MINIMIZE: /* CORE-15669: SW_MINIMIZE also shows */
          Swp |= SWP_SHOWWINDOW;
-         /* Fall through. */
-      case SW_MINIMIZE:
          {
             Swp |= SWP_NOACTIVATE;
             if (!(style & WS_MINIMIZE))
@@ -2577,7 +2656,7 @@ co_WinPosShowWindow(PWND Wnd, INT Cmd)
 
       default:
          //ERR("co_WinPosShowWindow Exit Good 4\n");
-         return WasVisible;
+         return FALSE;
    }
 
    ShowFlag = (Cmd != SW_HIDE);

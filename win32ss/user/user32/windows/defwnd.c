@@ -328,6 +328,9 @@ User32DefWindowProc(HWND hWnd,
 
     switch (Msg)
     {
+        case WM_DEVICECHANGE:
+            return TRUE;
+
         case WM_POPUPSYSTEMMENU:
         {
             /* This is an undocumented message used by the windows taskbar to
@@ -335,8 +338,11 @@ User32DefWindowProc(HWND hWnd,
             HMENU menu = GetSystemMenu(hWnd, FALSE);
             ERR("WM_POPUPSYSTEMMENU\n");
             if (menu)
+            {
+                SetForegroundWindow(hWnd);
                 TrackPopupMenu(menu, TPM_LEFTBUTTON|TPM_RIGHTBUTTON|TPM_SYSTEM_MENU,
                                LOWORD(lParam), HIWORD(lParam), 0, hWnd, NULL);
+            }
             return 0;
         }
 

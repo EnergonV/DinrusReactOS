@@ -330,6 +330,12 @@ typedef struct DEVICE_EXTENSION
     struct _VFATFCB *RootFcb;
     PSTATISTICS Statistics;
 
+    /* Overflow request queue */
+    KSPIN_LOCK OverflowQueueSpinLock;
+    LIST_ENTRY OverflowQueue;
+    ULONG OverflowQueueCount;
+    ULONG PostedRequestCount;
+
     /* Pointers to functions for manipulating FAT. */
     PGET_NEXT_CLUSTER GetNextCluster;
     PFIND_AND_MARK_AVAILABLE_CLUSTER FindAndMarkAvailableCluster;
@@ -1148,14 +1154,14 @@ VfatBuildRequest(
 
 PVOID
 VfatGetUserBuffer(
-    IN PIRP,
+    IN PIRP Irp,
     IN BOOLEAN Paging);
 
 NTSTATUS
 VfatLockUserBuffer(
-    IN PIRP,
-    IN ULONG,
-    IN LOCK_OPERATION);
+    IN PIRP Irp,
+    IN ULONG Length,
+    IN LOCK_OPERATION Operation);
 
 BOOLEAN
 VfatCheckForDismount(
@@ -1189,7 +1195,7 @@ VfatRead(
 
 NTSTATUS
 VfatWrite(
-    PVFAT_IRP_CONTEXT IrpContext);
+    PVFAT_IRP_CONTEXT *pIrpContext);
 
 NTSTATUS
 NextCluster(
@@ -1222,9 +1228,8 @@ vfatIsLongIllegal(
     WCHAR c);
 
 BOOLEAN
-wstrcmpjoki(
-    PWSTR s1,
-    PWSTR s2);
+IsDotOrDotDot(
+    PCUNICODE_STRING Name);
 
 /* volume.c */
 

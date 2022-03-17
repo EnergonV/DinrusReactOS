@@ -1,6 +1,7 @@
 
 add_definitions(
     -D__WINESRC__
+    -D__ROS_LONG64__
     -D_WINE
     -DLIBXML_STATIC
     -DCOM_NO_WINDOWS_H)
@@ -47,8 +48,6 @@ list(APPEND SOURCE
     xmlelem.c
     xmlparser.c
     xmlview.c
-    xslpattern.tab.c
-    xslpattern.yy.c
     precomp.h
     ${CMAKE_CURRENT_BINARY_DIR}/msxml3_stubs.c)
 
@@ -60,8 +59,10 @@ list(APPEND msxml3_rc_deps
 
 set_source_files_properties(version.rc PROPERTIES OBJECT_DEPENDS "${msxml3_rc_deps}")
 
-add_library(msxml3 SHARED
+add_library(msxml3 MODULE
     ${SOURCE}
+    xslpattern.tab.c
+    xslpattern.yy.c
     factory.c
     uuid.c
     version.rc

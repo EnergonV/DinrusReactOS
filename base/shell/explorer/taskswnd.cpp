@@ -285,7 +285,9 @@ public:
             TBSTYLE_TOOLTIPS | TBSTYLE_WRAPABLE | TBSTYLE_LIST | TBSTYLE_TRANSPARENT |
             CCS_TOP | CCS_NORESIZE | CCS_NODIVIDER;
 
-        return SubclassWindow(CToolbar::Create(hWndParent, styles));
+        HWND toolbar = CToolbar::Create(hWndParent, styles);
+        SetDrawTextFlags(DT_NOPREFIX, DT_NOPREFIX);
+        return SubclassWindow(toolbar);
     }
 };
 
@@ -1623,6 +1625,11 @@ public:
         return FALSE;
     }
 
+    static VOID CALLBACK
+    SendAsyncProc(HWND hwnd, UINT uMsg, DWORD_PTR dwData, LRESULT lResult)
+    {
+        ::PostMessageW(hwnd, WM_NULL, 0, 0);
+    }
 
     VOID HandleTaskItemRightClick(IN OUT PTASK_ITEM TaskItem)
     {
@@ -1633,7 +1640,11 @@ public:
 
         ActivateTask(TaskItem->hWnd);
 
-        ::SendMessageW(TaskItem->hWnd, WM_POPUPSYSTEMMENU, 0, MAKELPARAM(pt.x, pt.y));
+        if (GetForegroundWindow() != TaskItem->hWnd)
+            ERR("HandleTaskItemRightClick detected the window did not become foreground\n");
+
+        ::SendMessageCallbackW(TaskItem->hWnd, WM_POPUPSYSTEMMENU, 0, MAKELPARAM(pt.x, pt.y),
+                               SendAsyncProc, (ULONG_PTR)TaskItem);
     }
 
     VOID HandleTaskGroupRightClick(IN OUT PTASK_GROUP TaskGroup)

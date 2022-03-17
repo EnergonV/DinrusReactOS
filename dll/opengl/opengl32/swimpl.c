@@ -616,63 +616,6 @@ static inline ULONG GET_PIXEL_32(ULONG* Buffer)
     return *Buffer;
 }
 
-static inline COLORREF MAKE_COLORREF_8(const struct pixel_format *format, BYTE Color)
-{
-    BYTE R,G,B;
-
-    if (format->iPixelType == PFD_TYPE_COLORINDEX)
-        return PALETTEINDEX(Color);
-
-    R = (Color & 0x7) << 5; 
-    G = (Color & 0x38) << 2;
-    B = Color & 0xC;
-
-    return RGB(R, G, B);
-}
-
-static inline COLORREF MAKE_COLORREF_16(const struct pixel_format *format, USHORT Color)
-{
-    BYTE R,G,B;
-
-    if (format->iPixelType == PFD_TYPE_COLORINDEX)
-        return PALETTEINDEX(Color);
-
-    R = (Color & 0x7) << 5; 
-    G = (Color & 0x38) << 2;
-    B = Color & 0xC;
-
-    return RGB(R, G, B);
-}
-
-static inline COLORREF MAKE_COLORREF_24(const struct pixel_format *format, ULONG Color)
-{
-    BYTE R,G,B;
-
-    if (format->iPixelType == PFD_TYPE_COLORINDEX)
-        return PALETTEINDEX(Color);
-
-    R = (Color & 0xFF0000) >> 16;
-    G = (Color & 0x00FF00) >> 8;
-    B = Color & 0xFF;
-
-    return RGB(R, G, B);
-}
-
-static inline COLORREF MAKE_COLORREF_32(const struct pixel_format *format, ULONG Color)
-{
-    BYTE R,G,B;
-
-    if (format->iPixelType == PFD_TYPE_COLORINDEX)
-        return PALETTEINDEX(Color);
-
-    R = (Color & 0xFF0000) >> 16;
-    G = (Color & 0x00FF00) >> 8;
-    B = Color & 0xFF;
-
-    return RGB(R, G, B);
-}
-
-
 static inline BYTE PACK_COLOR_8(GLubyte r, GLubyte g, GLubyte b)
 {
     return (r & 0x7) | ((g & 0x7) << 3) | ((b & 0x3) << 6);
@@ -768,6 +711,24 @@ static inline void UNPACK_COLORREF_32(COLORREF Color, GLubyte* r, GLubyte* g, GL
     *g = GetGValue(Color);
     *b = GetBValue(Color);
 }
+
+#define MAKE_COLORREF(__bpp, __type)                                                            \
+static inline COLORREF MAKE_COLORREF_##__bpp(const struct pixel_format *format, __type Color)   \
+{                                                                                               \
+    GLubyte r,g,b;                                                                              \
+                                                                                                \
+    if (format->iPixelType == PFD_TYPE_COLORINDEX)                                              \
+        return PALETTEINDEX(Color);                                                             \
+                                                                                                \
+    UNPACK_COLOR_##__bpp(Color, &r, &g, &b);                                                    \
+                                                                                                \
+    return PACK_COLORREF_##__bpp(r, g, b);                                                      \
+}
+MAKE_COLORREF(8, BYTE)
+MAKE_COLORREF(16, USHORT)
+MAKE_COLORREF(24, ULONG)
+MAKE_COLORREF(32, ULONG)
+#undef MAKE_COLORREF
 
 /*
 * Set the color index used to clear the color buffer.
@@ -1280,7 +1241,7 @@ static void read_color_span_##__bpp(GLcontext* ctx,                             
     {                                                                           \
         Buffer -= __pixel_size;                                                 \
         UNPACK_COLOR_##__bpp(GET_PIXEL_##__bpp((__type*)Buffer),                \
-                &blue[n], &green[n], &red[n]);                                  \
+                &red[n], &green[n], &blue[n]);                                  \
         alpha[n] = 0;                                                           \
     }                                                                           \
 }
@@ -1333,7 +1294,7 @@ static void read_color_pixels_##__bpp(GLcontext* ctx,                           
             BYTE *Buffer = fb->BackBuffer + y[n] * WIDTH_BYTES_ALIGN32(fb->width, __bpp)    \
                     + x[n] * __pixel_size;                                                  \
             UNPACK_COLOR_##__bpp(GET_PIXEL_##__bpp((__type*)Buffer),                        \
-                    &blue[n], &green[n], &red[n]);                                          \
+                    &red[n], &green[n], &blue[n]);                                          \
             alpha[n] = 0;                                                                   \
         }                                                                                   \
     }                                                                                       \

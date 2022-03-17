@@ -5045,12 +5045,28 @@ ResetDevice(
 #endif
 }
 
-static BOOL StopDevice(
+static BOOL
+StopDevice(
         IN HDEVINFO DeviceInfoSet,
         IN PSP_DEVINFO_DATA DeviceInfoData)
 {
+#ifndef __WINESRC__
+    struct DeviceInfoSet *set = (struct DeviceInfoSet *)DeviceInfoSet;
+    struct DeviceInfo *deviceInfo = (struct DeviceInfo *)DeviceInfoData->Reserved;
+    CONFIGRET cr;
+
+    cr = CM_Disable_DevNode_Ex(deviceInfo->dnDevInst, 0, set->hMachine);
+    if (cr != CR_SUCCESS)
+    {
+        SetLastError(GetErrorCodeFromCrCode(cr));
+        return FALSE;
+    }
+
+    return TRUE;
+#else
     FIXME("Stub: StopDevice(%p %p)\n", DeviceInfoSet, DeviceInfoData);
     return TRUE;
+#endif
 }
 
 /***********************************************************************
@@ -6089,4 +6105,49 @@ BOOL WINAPI SetupDiDeleteDevRegKey(
     if (RootKey != set->HKLM)
         RegCloseKey(RootKey);
     return ret;
+}
+
+/***********************************************************************
+ *		SetupDiRestartDevices (SETUPAPI.@)
+ */
+BOOL
+WINAPI
+SetupDiRestartDevices(
+    HDEVINFO DeviceInfoSet,
+    PSP_DEVINFO_DATA DeviceInfoData)
+{
+    struct DeviceInfoSet *set = (struct DeviceInfoSet *)DeviceInfoSet;
+    struct DeviceInfo *devInfo;
+    CONFIGRET cr;
+
+    TRACE("%p %p\n", DeviceInfoSet, DeviceInfoData);
+
+    if (!DeviceInfoSet || DeviceInfoSet == INVALID_HANDLE_VALUE)
+    {
+        SetLastError(ERROR_INVALID_HANDLE);
+        return FALSE;
+    }
+    if (set->magic != SETUP_DEVICE_INFO_SET_MAGIC)
+    {
+        SetLastError(ERROR_INVALID_HANDLE);
+        return FALSE;
+    }
+
+    if (!DeviceInfoData || DeviceInfoData->cbSize != sizeof(SP_DEVINFO_DATA)
+            || !DeviceInfoData->Reserved)
+    {
+        SetLastError(ERROR_INVALID_PARAMETER);
+        return FALSE;
+    }
+
+    devInfo = (struct DeviceInfo *)DeviceInfoData->Reserved;
+
+    cr = CM_Enable_DevNode_Ex(devInfo->dnDevInst, 0, set->hMachine);
+    if (cr != CR_SUCCESS)
+    {
+        SetLastError(GetErrorCodeFromCrCode(cr));
+        return FALSE;
+    }
+
+    return TRUE;
 }

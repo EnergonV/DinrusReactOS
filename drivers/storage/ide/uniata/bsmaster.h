@@ -709,6 +709,7 @@ typedef struct _IDE_AHCI_PORT_REGISTERS {
 #define         ATA_AHCI_P_CMD_HPCP     0x00040000
 #define         ATA_AHCI_P_CMD_ISP      0x00080000
 #define         ATA_AHCI_P_CMD_CPD      0x00100000
+#define         ATA_AHCI_P_CMD_ESP      0x00200000
 #define         ATA_AHCI_P_CMD_ATAPI    0x01000000
 #define         ATA_AHCI_P_CMD_DLAE     0x02000000
 #define         ATA_AHCI_P_CMD_ALPE     0x04000000
@@ -1002,7 +1003,11 @@ struct _HW_LU_EXTENSION;
 
 typedef struct _IORES {
     union {
+#ifdef __REACTOS__
+        ULONG_PTR Addr;      /* Base address*/
+#else
         ULONG Addr;          /* Base address*/
+#endif
         PVOID pAddr;         /* Base address in pointer form */
     };
     ULONG MemIo:1;       /* Memory mapping (1) vs IO ports (0) */

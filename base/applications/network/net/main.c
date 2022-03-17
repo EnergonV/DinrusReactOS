@@ -34,7 +34,7 @@ COMMAND cmds[] =
     {L"print",      unimplemented},
     {L"send",       unimplemented},
     {L"session",    unimplemented},
-    {L"share",      unimplemented},
+    {L"share",      cmdShare},
     {L"start",      cmdStart},
     {L"statistics", cmdStatistics},
     {L"stop",       cmdStop},
@@ -75,6 +75,84 @@ PrintPadding(
     szMsgBuffer[nPaddedLength] = UNICODE_NULL;
 
     ConPuts(StdOut, szMsgBuffer);
+}
+
+
+VOID
+PrintMessageStringV(
+    DWORD dwMessage,
+    ...)
+{
+    PWSTR pBuffer;
+    va_list args = NULL;
+
+    va_start(args, dwMessage);
+
+    FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE,
+                   hModuleNetMsg,
+                   dwMessage,
+                   LANG_USER_DEFAULT,
+                   (LPWSTR)&pBuffer,
+                   0,
+                   &args);
+    va_end(args);
+
+    if (pBuffer)
+    {
+        ConPuts(StdOut, pBuffer);
+        LocalFree(pBuffer);
+        pBuffer = NULL;
+    }
+}
+
+VOID
+PrintMessageString(
+    DWORD dwMessage)
+{
+    PWSTR pBuffer;
+
+    FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE |
+                   FORMAT_MESSAGE_IGNORE_INSERTS,
+                   hModuleNetMsg,
+                   dwMessage,
+                   LANG_USER_DEFAULT,
+                   (LPWSTR)&pBuffer,
+                   0,
+                   NULL);
+    if (pBuffer)
+    {
+        ConPuts(StdOut, pBuffer);
+        LocalFree(pBuffer);
+        pBuffer = NULL;
+    }
+}
+
+
+VOID
+PrintPaddedMessageString(
+    DWORD dwMessage,
+    INT nPaddedLength)
+{
+    PWSTR pBuffer;
+    DWORD dwLength;
+
+    dwLength = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE |
+                              FORMAT_MESSAGE_IGNORE_INSERTS,
+                              hModuleNetMsg,
+                              dwMessage,
+                              LANG_USER_DEFAULT,
+                              (LPWSTR)&pBuffer,
+                              0,
+                              NULL);
+    if (pBuffer)
+    {
+        ConPuts(StdOut, pBuffer);
+        LocalFree(pBuffer);
+        pBuffer = NULL;
+    }
+
+    if (dwLength < (DWORD)nPaddedLength)
+        PrintPadding(L' ', (DWORD)nPaddedLength - dwLength);
 }
 
 
@@ -249,7 +327,8 @@ int wmain(int argc, WCHAR **argv)
 done:
     if (bRun == FALSE)
     {
-        ConResPuts(StdOut, IDS_GENERIC_SYNTAX);
+        PrintMessageString(4381);
+        ConPuts(StdOut, L"\n");
         PrintNetMessage(MSG_NET_SYNTAX);
     }
 

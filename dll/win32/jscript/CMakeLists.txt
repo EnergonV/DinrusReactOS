@@ -1,6 +1,7 @@
 
 add_definitions(
     -D__WINESRC__
+    -D__ROS_LONG64__
     -D_USE_MATH_DEFINES)
 
 include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/wine)
@@ -10,12 +11,12 @@ list(APPEND SOURCE
     activex.c
     array.c
     bool.c
-    cc_parser.tab.c
     compile.c
     date.c
     decode.c
     dispex.c
     engine.c
+    enumerator.c
     error.c
     function.c
     global.c
@@ -29,7 +30,6 @@ list(APPEND SOURCE
     math.c
     number.c
     object.c
-    parser.tab.c
     regexp.c
     string.c
     vbarray.c
@@ -43,8 +43,10 @@ list(APPEND jscript_rc_deps
 
 set_source_files_properties(rsrc.rc PROPERTIES OBJECT_DEPENDS "${jscript_rc_deps}")
 
-add_library(jscript SHARED
+add_library(jscript MODULE
     ${SOURCE}
+    cc_parser.tab.c
+    parser.tab.c
     rsrc.rc
     ${CMAKE_CURRENT_BINARY_DIR}/jscript.def)
 

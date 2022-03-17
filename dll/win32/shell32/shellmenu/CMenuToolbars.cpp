@@ -258,6 +258,10 @@ HRESULT CMenuToolbarBase::OnCustomDraw(LPNMTBCUSTOMDRAW cdraw, LRESULT * theResu
         }
         *theResult = TRUE;
         return S_OK;
+
+    default:
+        *theResult = 0L;
+        break;
     }
     return S_OK;
 }
@@ -950,7 +954,7 @@ HRESULT CMenuToolbarBase::KeyboardItemChange(DWORD dwSelectType)
                     {
                         HWND tlw;
                         m_menuBand->_GetTopLevelWindow(&tlw);
-                        SendMessageW(tlw, WM_CANCELMODE, 0, 0);
+                        ::SendMessageW(tlw, WM_CANCELMODE, 0, 0);
                         PostMessageW(WM_USER_CHANGETRACKEDITEM, index, MAKELPARAM(m_isTrackingPopup, FALSE));
                     }
                     else

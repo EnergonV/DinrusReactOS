@@ -40,6 +40,20 @@ PrintPadding(
     INT nPaddedLength);
 
 VOID
+PrintMessageString(
+    DWORD dwMessage);
+
+VOID
+PrintMessageStringV(
+    DWORD dwMessage,
+    ...);
+
+VOID
+PrintPaddedMessageString(
+    DWORD dwMessage,
+    INT nPaddedLength);
+
+VOID
 PrintErrorMessage(
     DWORD dwError);
 
@@ -65,6 +79,7 @@ INT cmdHelp(INT argc, WCHAR **argv);
 INT cmdHelpMsg(INT argc, WCHAR **argv);
 INT cmdLocalGroup(INT argc, WCHAR **argv);
 INT cmdPause(INT argc, WCHAR **argv);
+INT cmdShare(INT argc, WCHAR **argv);
 INT cmdStart(INT argc, WCHAR **argv);
 INT cmdStatistics(INT argc, WCHAR **argv);
 INT cmdStop(INT argc, WCHAR **argv);

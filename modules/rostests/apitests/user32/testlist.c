@@ -10,7 +10,9 @@ extern void func_CreateIconFromResourceEx(void);
 extern void func_CreateWindowEx(void);
 extern void func_DeferWindowPos(void);
 extern void func_DestroyCursorIcon(void);
+extern void func_DM_REPOSITION(void);
 extern void func_DrawIconEx(void);
+extern void func_DrawText(void);
 extern void func_desktop(void);
 extern void func_EmptyClipboard(void);
 extern void func_EnumDisplaySettings(void);
@@ -25,6 +27,7 @@ extern void func_GetWindowPlacement(void);
 extern void func_InitializeLpkHooks(void);
 extern void func_LoadImage(void);
 extern void func_LookupIconIdFromDirectoryEx(void);
+extern void func_MessageStateAnalyzer(void);
 extern void func_NextDlgItem(void);
 extern void func_PrivateExtractIcons(void);
 extern void func_RealGetWindowClass(void);
@@ -41,6 +44,7 @@ extern void func_SetParent(void);
 extern void func_SetProp(void);
 extern void func_SetScrollInfo(void);
 extern void func_SetScrollRange(void);
+extern void func_ShowWindow(void);
 extern void func_SwitchToThisWindow(void);
 extern void func_SystemParametersInfo(void);
 extern void func_TrackMouseEvent(void);
@@ -56,7 +60,9 @@ const struct test winetest_testlist[] =
     { "CreateWindowEx", func_CreateWindowEx },
     { "DeferWindowPos", func_DeferWindowPos },
     { "DestroyCursorIcon", func_DestroyCursorIcon },
+    { "DM_REPOSITION", func_DM_REPOSITION },
     { "DrawIconEx", func_DrawIconEx },
+    { "DrawText", func_DrawText },
     { "desktop", func_desktop },
     { "EmptyClipboard", func_EmptyClipboard },
     { "EnumDisplaySettings", func_EnumDisplaySettings },
@@ -71,6 +77,7 @@ const struct test winetest_testlist[] =
     { "InitializeLpkHooks", func_InitializeLpkHooks },
     { "LoadImage", func_LoadImage },
     { "LookupIconIdFromDirectoryEx", func_LookupIconIdFromDirectoryEx },
+    { "MessageStateAnalyzer", func_MessageStateAnalyzer },
     { "NextDlgItem", func_NextDlgItem },
     { "PrivateExtractIcons", func_PrivateExtractIcons },
     { "RealGetWindowClass", func_RealGetWindowClass },
@@ -87,6 +94,7 @@ const struct test winetest_testlist[] =
     { "SetProp", func_SetProp },
     { "SetScrollInfo", func_SetScrollInfo },
     { "SetScrollRange", func_SetScrollRange },
+    { "ShowWindow", func_ShowWindow },
     { "SwitchToThisWindow", func_SwitchToThisWindow },
     { "SystemParametersInfo", func_SystemParametersInfo },
     { "TrackMouseEvent", func_TrackMouseEvent },

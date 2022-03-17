@@ -23,6 +23,7 @@ list(APPEND COMMON_SOURCE
     rtl/RtlRegistry.c
     rtl/RtlSplayTree.c
     rtl/RtlStack.c
+    rtl/RtlStrSafe.c
     rtl/RtlUnicodeString.c)
 
 #
@@ -100,12 +101,12 @@ list(APPEND KMTEST_DRV_SOURCE
 
     kmtest_drv/kmtest_drv.rc)
 
-add_library(kmtest_drv SHARED ${KMTEST_DRV_SOURCE})
+add_library(kmtest_drv MODULE ${KMTEST_DRV_SOURCE})
 set_module_type(kmtest_drv kernelmodedriver)
 target_link_libraries(kmtest_drv kmtest_printf chkstk memcmp ntoskrnl_vista ${PSEH_LIB})
 add_importlibs(kmtest_drv ntoskrnl hal)
 add_dependencies(kmtest_drv bugcodes xdk)
-add_target_compile_definitions(kmtest_drv KMT_KERNEL_MODE NTDDI_VERSION=NTDDI_WS03SP1)
+target_compile_definitions(kmtest_drv PRIVATE KMT_KERNEL_MODE NTDDI_VERSION=NTDDI_WS03SP1)
 #add_pch(kmtest_drv include/kmt_test.h)
 add_rostests_file(TARGET kmtest_drv)
 
@@ -114,8 +115,8 @@ add_library(kmtest_printf
     ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/strnlen.c
     ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/wcsnlen.c
     ${REACTOS_SOURCE_DIR}/sdk/lib/crt/printf/streamout.c)
-add_target_compile_definitions(kmtest_printf _LIBCNT_ _USER32_WSPRINTF wctomb=KmtWcToMb)
-add_target_include_directories(kmtest_printf ${REACTOS_SOURCE_DIR}/sdk/lib/crt/include)
+target_compile_definitions(kmtest_printf PRIVATE _LIBCNT_ _USER32_WSPRINTF wctomb=KmtWcToMb)
+target_include_directories(kmtest_printf PRIVATE ${REACTOS_SOURCE_DIR}/sdk/lib/crt/include)
 
 #
 # kmtest.exe loader application
@@ -138,6 +139,7 @@ list(APPEND KMTEST_SOURCE
     kernel32/FileAttributes_user.c
     kernel32/FindFile_user.c
     ntos_cc/CcCopyRead_user.c
+    ntos_cc/CcCopyWrite_user.c
     ntos_cc/CcMapData_user.c
     ntos_cc/CcPinMappedData_user.c
     ntos_cc/CcPinRead_user.c
@@ -157,7 +159,7 @@ add_executable(kmtest ${KMTEST_SOURCE})
 set_module_type(kmtest win32cui)
 target_link_libraries(kmtest ${PSEH_LIB})
 add_importlibs(kmtest fltlib advapi32 ws2_32 msvcrt kernel32 ntdll)
-add_target_compile_definitions(kmtest KMT_USER_MODE NTDDI_VERSION=NTDDI_WS03SP1)
+target_compile_definitions(kmtest PRIVATE KMT_USER_MODE NTDDI_VERSION=NTDDI_WS03SP1)
 #add_pch(kmtest include/kmt_test.h)
 set_target_properties(kmtest PROPERTIES OUTPUT_NAME "kmtest_")
 add_rostests_file(TARGET kmtest)

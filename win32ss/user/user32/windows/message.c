@@ -95,10 +95,11 @@ static const unsigned int message_pointer_flags[] =
 };
 
 /* check whether a given message type includes pointers */
-static inline int is_pointer_message( UINT message )
+static inline int is_pointer_message( UINT message, WPARAM wparam )
 {
     if (message >= 8*sizeof(message_pointer_flags)) return FALSE;
-        return (message_pointer_flags[message / 32] & SET(message)) != 0;
+    if (message == WM_DEVICECHANGE && !(wparam & 0x8000)) return FALSE;
+    return (message_pointer_flags[message / 32] & SET(message)) != 0;
 }
 
 #undef SET
@@ -1486,20 +1487,15 @@ IntCallWindowProcW(BOOL IsAnsiProc,
 
       if (PreResult) goto Exit;
 
-      if (!Dialog)
-      Result = CALL_EXTERN_WNDPROC(WndProc, AnsiMsg.hwnd, AnsiMsg.message, AnsiMsg.wParam, AnsiMsg.lParam);
-      else
-      {
       _SEH2_TRY
       {
          Result = CALL_EXTERN_WNDPROC(WndProc, AnsiMsg.hwnd, AnsiMsg.message, AnsiMsg.wParam, AnsiMsg.lParam);
       }
       _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
       {
-         ERR("Exception Dialog Ansi %p Msg %d pti %p Wndpti %p\n",WndProc,Msg,GetW32ThreadInfo(),pWnd->head.pti);
+         ERR("Exception when calling Ansi WndProc %p Msg %d pti %p Wndpti %p\n",WndProc,Msg,GetW32ThreadInfo(),pWnd->head.pti);
       }
       _SEH2_END;
-      }
 
       if (Hook && (MsgOverride || DlgOverride))
       {
@@ -1542,20 +1538,15 @@ IntCallWindowProcW(BOOL IsAnsiProc,
 
       if (PreResult) goto Exit;
 
-      if (!Dialog)
-      Result = CALL_EXTERN_WNDPROC(WndProc, hWnd, Msg, wParam, lParam);
-      else
-      {
       _SEH2_TRY
       {
          Result = CALL_EXTERN_WNDPROC(WndProc, hWnd, Msg, wParam, lParam);
       }
       _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
       {
-         ERR("Exception Dialog unicode %p Msg %d pti %p Wndpti %p\n",WndProc, Msg,GetW32ThreadInfo(),pWnd->head.pti);
+         ERR("Exception when calling unicode WndProc %p Msg %d pti %p Wndpti %p\n",WndProc, Msg,GetW32ThreadInfo(),pWnd->head.pti);
       }
       _SEH2_END;
-      }
 
       if (Hook && (MsgOverride || DlgOverride))
       {
@@ -1636,20 +1627,15 @@ IntCallWindowProcA(BOOL IsAnsiProc,
 
       if (PreResult) goto Exit;
 
-      if (!Dialog)
-      Result = CALL_EXTERN_WNDPROC(WndProc, hWnd, Msg, wParam, lParam);
-      else
-      {
       _SEH2_TRY
       {
          Result = CALL_EXTERN_WNDPROC(WndProc, hWnd, Msg, wParam, lParam);
       }
       _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
       {
-         ERR("Exception Dialog Ansi %p Msg %d pti %p Wndpti %p\n",WndProc,Msg,GetW32ThreadInfo(),pWnd->head.pti);
+         ERR("Exception when calling Ansi WndProc %p Msg %d pti %p Wndpti %p\n",WndProc,Msg,GetW32ThreadInfo(),pWnd->head.pti);
       }
       _SEH2_END;
-      }
 
       if (Hook && (MsgOverride || DlgOverride))
       {
@@ -1699,20 +1685,15 @@ IntCallWindowProcA(BOOL IsAnsiProc,
 
       if (PreResult) goto Exit;
 
-      if (!Dialog)
-      Result = CALL_EXTERN_WNDPROC(WndProc, UnicodeMsg.hwnd, UnicodeMsg.message, UnicodeMsg.wParam, UnicodeMsg.lParam);
-      else
-      {
       _SEH2_TRY
       {
          Result = CALL_EXTERN_WNDPROC(WndProc, UnicodeMsg.hwnd, UnicodeMsg.message, UnicodeMsg.wParam, UnicodeMsg.lParam);
       }
       _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
       {
-         ERR("Exception Dialog unicode %p Msg %d pti %p Wndpti %p\n",WndProc, Msg,GetW32ThreadInfo(),pWnd->head.pti);
+         ERR("Exception when calling unicode WndProc %p Msg %d pti %p Wndpti %p\n",WndProc, Msg,GetW32ThreadInfo(),pWnd->head.pti);
       }
       _SEH2_END;
-      }
 
       if (Hook && (MsgOverride || DlgOverride))
       {
@@ -1917,7 +1898,7 @@ DispatchMessageA(CONST MSG *lpmsg)
     else
         Wnd = NULL;
 
-    if (is_pointer_message(lpmsg->message))
+    if (is_pointer_message(lpmsg->message, lpmsg->wParam))
     {
        SetLastError( ERROR_MESSAGE_SYNC_ONLY );
        return 0;
@@ -2006,7 +1987,7 @@ DispatchMessageW(CONST MSG *lpmsg)
     else
         Wnd = NULL;
 
-    if (is_pointer_message(lpmsg->message))
+    if (is_pointer_message(lpmsg->message, lpmsg->wParam))
     {
        SetLastError( ERROR_MESSAGE_SYNC_ONLY );
        return 0;
@@ -2162,7 +2143,7 @@ PeekMessageWorker( PMSG pMsg,
         {  // Not waiting for idle event.
            if (!pcti->fsChangeBits && !pcti->fsWakeBits)
            {  // No messages are available.
-              if ((GetTickCount() - pcti->tickLastMsgChecked) > 1000)
+              if ((GetTickCount() - pcti->timeLastRead) > 1000)
               {  // Up the msg read count if over 1 sec.
                  NtUserGetThreadState(THREADSTATE_UPTIMELASTREAD);
               }
@@ -2529,7 +2510,7 @@ SendMessageCallbackA(
   MSG AnsiMsg, UcMsg;
   CALL_BACK_INFO CallBackInfo;
 
-  if (is_pointer_message(Msg))
+  if (is_pointer_message(Msg, wParam))
   {
      SetLastError( ERROR_MESSAGE_SYNC_ONLY );
      return FALSE;
@@ -2579,7 +2560,7 @@ SendMessageCallbackW(
 {
   CALL_BACK_INFO CallBackInfo;
 
-  if (is_pointer_message(Msg))
+  if (is_pointer_message(Msg, wParam))
   {
      SetLastError( ERROR_MESSAGE_SYNC_ONLY );
      return FALSE;
@@ -2742,7 +2723,7 @@ SendNotifyMessageA(
   BOOL Ret;
   MSG AnsiMsg, UcMsg;
 
-  if (is_pointer_message(Msg))
+  if (is_pointer_message(Msg, wParam))
   {
      SetLastError( ERROR_MESSAGE_SYNC_ONLY );
      return FALSE;
@@ -2779,7 +2760,7 @@ SendNotifyMessageW(
 {
   LRESULT Result;
 
-  if (is_pointer_message(Msg))
+  if (is_pointer_message(Msg, wParam))
   {
      SetLastError( ERROR_MESSAGE_SYNC_ONLY );
      return FALSE;
@@ -2898,12 +2879,21 @@ DWORD
 WINAPI
 RealGetQueueStatus(UINT flags)
 {
-   #define QS_TEMPALLINPUT 255 // ATM, do not support QS_RAWINPUT
-   if (flags & ~(QS_SMRESULT|QS_ALLPOSTMESSAGE|QS_TEMPALLINPUT))
+   if (flags & ~(QS_ALLINPUT|QS_ALLPOSTMESSAGE|QS_SMRESULT))
    {
       SetLastError( ERROR_INVALID_FLAGS );
       return 0;
    }
+   /** ATM, we do not support QS_RAWINPUT, but we need to support apps that pass
+    ** this flag along, while also working around QS_RAWINPUT checks in winetests.
+    ** Just set the last error to ERROR_INVALID_FLAGS but do not fail the call.
+    **/
+   if (flags & QS_RAWINPUT)
+   {
+      SetLastError(ERROR_INVALID_FLAGS);
+      flags &= ~QS_RAWINPUT;
+   }
+   /**/
    return NtUserxGetQueueStatus(flags);
 }
 

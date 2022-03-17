@@ -1,5 +1,5 @@
 
-add_definitions(-D__WINESRC__)
+add_definitions(-D__WINESRC__ -D__ROS_LONG64__)
 include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/wine)
 spec2def(vbscript.dll vbscript.spec)
 
@@ -8,7 +8,6 @@ list(APPEND SOURCE
     global.c
     interp.c
     lex.c
-    parser.tab.c
     regexp.c
     utils.c
     vbdisp.c
@@ -30,8 +29,9 @@ set_source_files_properties(vbscript.rc PROPERTIES OBJECT_DEPENDS "${vbscript_rc
 add_idl_headers(vbscript_idlheader vbscript_classes.idl vbsglobal.idl vbsregexp55.idl)
 add_typelib(vbsglobal.idl vbsregexp10.idl vbsregexp55.idl)
 
-add_library(vbscript SHARED
+add_library(vbscript MODULE
     ${SOURCE}
+    parser.tab.c
     vbscript.rc
     ${CMAKE_CURRENT_BINARY_DIR}/vbscript.def)
 
