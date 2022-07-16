@@ -1,0 +1,13 @@
+file
+	lang\de-DE.rc,
+	lang\en-US.rc,
+	CMakeLists.txt,
+	enum.c,
+	hotplug.c,
+	hotplug.h,
+	hotplug.rc,
+	hotplug.spec,
+	resource.h,
+	resources\1.ico,
+	lang\id-ID.rc;
+

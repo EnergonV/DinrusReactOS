@@ -26,10 +26,10 @@
 #      include <string>
 #    else
 #      ifndef _STLP_INTERNAL_STDEXCEPT
-#        include <stl/_stdexcept.h>
+#        include "_stdexcept.h"
 #      endif
 #      ifndef _STLP_INTERNAL_STRING_H
-#        include <stl/_string.h>
+#        include "_string.h"
 #      endif
 #    endif
 #    define _STLP_THROW_MSG(ex,msg)  throw ex(msg)
@@ -40,10 +40,10 @@
 #    include <cstdio>
 #  else
 #    ifndef _STLP_INTERNAL_CSTDLIB
-#      include <stl/_cstdlib.h>
+#      include "_cstdlib.h"
 #    endif
 #    ifndef _STLP_INTERNAL_CSTDIO
-#      include <stl/_cstdio.h>
+#      include "_cstdio.h"
 #    endif
 #  endif
 #  define _STLP_THROW_MSG(ex,msg)  puts(msg),_STLP_ABORT()

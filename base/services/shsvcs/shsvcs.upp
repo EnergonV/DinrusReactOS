@@ -1,0 +1,8 @@
+file
+	CMakeLists.txt,
+	shsvcs.c,
+	shsvcs.rc,
+	shsvcs.spec,
+	thmserver.c,
+	thmsvc.c;
+

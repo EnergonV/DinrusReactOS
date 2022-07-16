@@ -1,0 +1,27 @@
+description "\377B";
+
+uses
+	base\services\audiosrv,
+	base\services\dcomlaunch,
+	base\services\dhcpcsvc,
+	base\services\dnsrslvr,
+	base\services\eventlog,
+	base\services\netlogon,
+	base\services\nfsd,
+	base\services\rpcss,
+	base\services\schedsvc,
+	base\services\shsvcs,
+	base\services\tcpsvcs,
+	base\services\telnetd,
+	base\services\tftpd,
+	base\services\umpnpmgr,
+	base\services\w32time,
+	base\services\wkssvc,
+	base\services\wlansvc,
+	base\services\wmisvc,
+	base\services\wuauserv,
+	base/setup;
+
+file
+	CMakeLists.txt;
+

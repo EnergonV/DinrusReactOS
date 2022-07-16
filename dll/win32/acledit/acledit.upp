@@ -1,0 +1,9 @@
+file
+	acledit.c,
+	acledit.rc,
+	acledit.spec,
+	acleditint.h,
+	CMakeLists.txt,
+	resource.h,
+	stubs.c;
+

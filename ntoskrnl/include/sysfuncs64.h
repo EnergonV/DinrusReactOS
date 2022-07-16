@@ -1,5 +1,5 @@
-SVC_(MapUserPhysicalPagesScatter, 3)
 SVC_(WaitForSingleObject, 4)
+SVC_(MapUserPhysicalPagesScatter, 3)
 SVC_(CallbackReturn, 3)
 SVC_(ReadFile, 9)
 SVC_(DeviceIoControlFile, 10)

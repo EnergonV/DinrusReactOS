@@ -1,0 +1,22 @@
+file
+	CMakeLists.txt,
+	resource.h,
+	subst.c,
+	lang\bg-BG.rc,
+	lang\cs-CZ.rc,
+	lang\de-DE.rc,
+	lang\en-US.rc,
+	lang\es-ES.rc,
+	lang\fr-FR.rc,
+	lang\id-ID.rc,
+	lang\it-IT.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\ru-RU.rc,
+	lang\sq-AL.rc,
+	lang\tr-TR.rc,
+	lang\uk-UA.rc,
+	lang\zh-CN.rc,
+	lang\zh-TW.rc,
+	subst.rc;
+

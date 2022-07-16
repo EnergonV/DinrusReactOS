@@ -1,0 +1,8 @@
+description "\377B";
+
+uses
+	dll\nls\normaliz;
+
+file
+	CMakeLists.txt;
+

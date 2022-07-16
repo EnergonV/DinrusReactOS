@@ -1,0 +1,6 @@
+file
+	CMakeLists.txt,
+	wmisvc.c,
+	wmisvc.rc,
+	wmisvc.spec;
+

@@ -27,11 +27,11 @@
 #define _STLP_HEAP_C
 
 #ifndef _STLP_INTERNAL_HEAP_H
-# include <stl/_heap.h>
+# include "_heap.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ITERATOR_BASE_H
-# include <stl/_iterator_base.h>
+# include "_iterator_base.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

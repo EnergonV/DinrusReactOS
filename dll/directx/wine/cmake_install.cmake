@@ -1,0 +1,85 @@
+# Install script for directory: E:/github/reactos/dll/directx/wine
+
+# Set the install prefix
+if(NOT DEFINED CMAKE_INSTALL_PREFIX)
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/REACTOS")
+endif()
+string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
+
+# Set the install configuration name.
+if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
+  if(BUILD_TYPE)
+    string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
+           CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
+  else()
+    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
+  endif()
+  message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
+endif()
+
+# Set the component getting installed.
+if(NOT CMAKE_INSTALL_COMPONENT)
+  if(COMPONENT)
+    message(STATUS "Install component: \"${COMPONENT}\"")
+    set(CMAKE_INSTALL_COMPONENT "${COMPONENT}")
+  else()
+    set(CMAKE_INSTALL_COMPONENT)
+  endif()
+endif()
+
+# Is this installation the result of a crosscompile?
+if(NOT DEFINED CMAKE_CROSSCOMPILING)
+  set(CMAKE_CROSSCOMPILING "TRUE")
+endif()
+
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "E:/dinrus/mingw64/bin/objdump.exe")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for each subdirectory.
+  include("E:/github/reactos/dll/directx/wine/amstream/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3d8/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3d9/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dcompiler_43/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3drm/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_24/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_25/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_26/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_27/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_28/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_29/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_30/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_31/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_32/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_33/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_34/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_35/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_36/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_37/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_38/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_39/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_40/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_41/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_42/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dx9_43/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/d3dxof/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/ddraw/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/devenum/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dinput/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dinput8/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dmusic/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dplay/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dplayx/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dpnhpast/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dsound/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/dxdiagn/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/msdmo/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/qcap/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/qedit/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/quartz/cmake_install.cmake")
+  include("E:/github/reactos/dll/directx/wine/wined3d/cmake_install.cmake")
+
+endif()
+

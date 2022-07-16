@@ -1,0 +1,23 @@
+file
+	CDeskLinkDropHandler.cpp,
+	CDeskLinkDropHandler.hpp,
+	CMakeLists.txt,
+	precomp.hpp,
+	resource.h,
+	sendmail.cpp,
+	sendmail.rc,
+	sendmail.spec,
+	sendmail_version.h,
+	lang\de-DE.rc,
+	lang\en-US.rc,
+	lang\es-ES.rc,
+	lang\fr-FR.rc,
+	lang\he-IL.rc,
+	lang\id-ID.rc,
+	lang\ja-JP.rc,
+	lang\pl-PL.rc,
+	lang\pt-PT.rc,
+	lang\ru-RU.rc,
+	res\desklink.rgs,
+	sendmail_version.rc;
+

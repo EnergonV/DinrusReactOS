@@ -1,0 +1,16 @@
+file
+	lang\en-US.rc,
+	lang\fr-FR.rc,
+	lang\it-IT.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\ru-RU.rc,
+	lang\tr-TR.rc,
+	CMakeLists.txt,
+	eventcreate.c,
+	eventcreate.rc,
+	evtmsggen.c,
+	evtmsgstr.mc,
+	resource.h,
+	lang\zh-CN.rc;
+

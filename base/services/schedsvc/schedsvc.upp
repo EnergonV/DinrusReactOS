@@ -1,0 +1,9 @@
+file
+	CMakeLists.txt,
+	job.c,
+	precomp.h,
+	rpcserver.c,
+	schedsvc.c,
+	schedsvc.rc,
+	schedsvc.spec;
+

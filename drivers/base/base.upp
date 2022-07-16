@@ -1,0 +1,9 @@
+description "\377B";
+
+uses
+	drivers\base\beep,
+	drivers\base\bootvid;
+
+file
+	CMakeLists.txt;
+

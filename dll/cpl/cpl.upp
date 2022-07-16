@@ -1,0 +1,28 @@
+description "\377B";
+
+uses
+	dll\cpl\access,
+	dll\cpl\appwiz,
+	dll\cpl\console,
+	dll\cpl\desk,
+	dll\cpl\hdwwiz,
+	dll/cpl/hotplug,
+	dll/cpl/inetcpl,
+	dll\cpl\input,
+	dll\cpl\intl,
+	dll\cpl\joy,
+	dll\cpl\main,
+	dll\cpl\mmsys,
+	dll\cpl\ncpa,
+	dll\cpl\odbccp32,
+	dll\cpl\openglcfg,
+	dll/cpl/powercfg,
+	dll\cpl\sysdm,
+	dll\cpl\telephon,
+	dll/cpl/timedate,
+	dll\cpl\usrmgr,
+	dll\cpl\wined3dcfg;
+
+file
+	CMakeLists.txt;
+

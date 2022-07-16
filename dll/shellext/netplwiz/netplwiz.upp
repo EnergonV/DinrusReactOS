@@ -1,0 +1,14 @@
+file
+	lang\en-US.rc,
+	lang\fr-FR.rc,
+	lang\it-IT.rc,
+	CMakeLists.txt,
+	netplwiz.c,
+	netplwiz.h,
+	netplwiz.rc,
+	netplwiz.spec,
+	resource.h,
+	SHDisconnectNetDrives.c,
+	res\4400.ico,
+	lang\pl-PL.rc;
+

@@ -1,0 +1,20 @@
+file
+	CMakeLists.txt,
+	dialog.c,
+	group.c,
+	grpfile.c,
+	main.c,
+	new_resources.rc,
+	progman.h,
+	progman.rc,
+	program.c,
+	resource.h,
+	resource_2.h,
+	res\group.ico,
+	res\group_common.ico,
+	res\group_personal.ico,
+	res\progman.ico,
+	res\roslogo.ico,
+	res\terminal.ico,
+	string.c;
+

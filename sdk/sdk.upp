@@ -1,0 +1,10 @@
+uses
+	sdk\cmake,
+	sdk\include,
+	sdk/lib;
+	
+	
+mainconfig
+
+    ""="";
+

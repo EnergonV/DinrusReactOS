@@ -1,0 +1,12 @@
+description "\377B";
+
+uses
+	base\setup\lib,
+	base\setup\reactos,
+	base\setup\setup,
+	base\setup\usetup,
+	base\setup\welcome;
+
+file
+	CMakeLists.txt;
+

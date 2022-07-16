@@ -1,0 +1,11 @@
+file
+	CMakeLists.txt,
+	dllmain.c,
+	nfs41_np.c,
+	nfs41_np.h,
+	nfs41_np.spec,
+	nfsnp.rc,
+	options.c,
+	options.h,
+	precomp.h;
+

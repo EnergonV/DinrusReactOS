@@ -1,0 +1,13 @@
+file
+	lang\en-US.rc,
+	lang\fr-FR.rc,
+	lang\it-IT.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\ru-RU.rc,
+	CMakeLists.txt,
+	resource.h,
+	timeout.c,
+	timeout.rc,
+	lang\zh-CN.rc;
+

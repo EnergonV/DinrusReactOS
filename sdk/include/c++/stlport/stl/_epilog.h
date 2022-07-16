@@ -12,11 +12,11 @@
  * like #pragmas, do include platform-specific prolog file
  */
 #if defined (_STLP_HAS_SPECIFIC_PROLOG_EPILOG)
-#  include <stl/config/_epilog.h>
+#  include "./config/_epilog.h"
 #endif
 
 #if !defined (_STLP_NO_POST_COMPATIBLE_SECTION)
-#  include <stl/_config_compat_post.h>
+#  include "_config_compat_post.h"
 #endif
 
 #if defined (_STLP_USE_OWN_NAMESPACE)

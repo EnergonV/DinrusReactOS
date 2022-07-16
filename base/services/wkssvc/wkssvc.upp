@@ -1,0 +1,9 @@
+file
+	CMakeLists.txt,
+	domain.c,
+	precomp.h,
+	rpcserver.c,
+	wkssvc.c,
+	wkssvc.rc,
+	wkssvc.spec;
+

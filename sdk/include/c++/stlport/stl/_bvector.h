@@ -31,7 +31,7 @@
 #define _STLP_INTERNAL_BVECTOR_H
 
 #ifndef _STLP_INTERNAL_VECTOR_H
-#  include <stl/_vector.h>
+#  include "_vector.h"
 #endif
 
 #define _STLP_WORD_BIT (int(CHAR_BIT * sizeof(unsigned int)))

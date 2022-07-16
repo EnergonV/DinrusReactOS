@@ -1,0 +1,5 @@
+file
+	CMakeLists.txt,
+	d3d8thk.rc,
+	d3d8thk.spec;
+

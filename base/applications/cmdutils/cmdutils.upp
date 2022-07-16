@@ -1,0 +1,35 @@
+description "\377B";
+
+uses
+	base\applications\cmdutils\at,
+	base\applications\cmdutils\attrib,
+	base\applications\cmdutils\chcp,
+	base\applications\cmdutils\clip,
+	base\applications\cmdutils\comp,
+	base\applications\cmdutils\cscript,
+	base\applications\cmdutils\dbgprint,
+	base\applications\cmdutils\doskey,
+	base\applications\cmdutils\eventcreate,
+	base\applications\cmdutils\find,
+	base\applications\cmdutils\fsutil,
+	base\applications\cmdutils\help,
+	base\applications\cmdutils\hostname,
+	base\applications\cmdutils\label,
+	base\applications\cmdutils\lodctr,
+	base\applications\cmdutils\mode,
+	base\applications\cmdutils\mofcomp,
+	base\applications\cmdutils\more,
+	base\applications\cmdutils\reg,
+	base/applications/cmdutils/schtasks,
+	base\applications\cmdutils\sort,
+	base\applications\cmdutils\taskkill,
+	base\applications\cmdutils\timeout,
+	base\applications\cmdutils\tree,
+	base/applications/cmdutils/whoami,
+	base\applications\cmdutils\wmic,
+	base\applications\cmdutils\wscript,
+	base\applications\cmdutils\xcopy;
+
+file
+	CMakeLists.txt;
+

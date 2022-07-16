@@ -1,0 +1,6 @@
+file
+	CMakeLists.txt,
+	README.txt,
+	tftpd.cpp,
+	tftpd.h;
+

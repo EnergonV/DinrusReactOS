@@ -1,0 +1,14 @@
+file
+	CMakeLists.txt,
+	crashdmp.c,
+	pagefile.c,
+	sminit.c,
+	smloop.c,
+	smsbapi.c,
+	smsessn.c,
+	smss.c,
+	smss.h,
+	smss.rc,
+	smsubsys.c,
+	smutil.c;
+

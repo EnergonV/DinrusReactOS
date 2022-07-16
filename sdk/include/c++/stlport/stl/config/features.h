@@ -41,7 +41,7 @@
  */
 
 /* Definition of the STLport version informations */
-#include <stl/_stlport_version.h>
+#include "../_stlport_version.h"
 
 /* Other macros defined by this file:
 
@@ -62,7 +62,7 @@
  * It could be also used to mask settings from
  * different directories.
  */
-#include <stl/config/user_config.h>
+#include "user_config.h"
 
 #if defined (_STLP_DEBUG) && !defined (_STLP_DEBUG_LEVEL)
 #  define _STLP_DEBUG_LEVEL _STLP_STLPORT_DBG_LEVEL
@@ -87,13 +87,13 @@
 /* ========================================================= */
 /* This file is used for compatibility; it accepts old-style config
    switches */
-#include <stl/config/compat.h>
+#include "compat.h"
 
 /* Common configuration file for this particular installation. */
-#include <stl/config/host.h>
+#include "host.h"
 
 /* Operational Environment specific */
-#include <stl/config/_system.h>
+#include "_system.h"
 
 /* ========================================================= */
 
@@ -102,7 +102,7 @@
  * or settings applicable to a group of compilers, such as
  * to all who use EDG front-end.
  */
-#include <stl/config/stl_confix.h>
+#include "stl_confix.h"
 
 #if !defined (_STLP_NO_MEMBER_TEMPLATES) && !defined (_STLP_MEMBER_TEMPLATES)
 #  define _STLP_MEMBER_TEMPLATES 1

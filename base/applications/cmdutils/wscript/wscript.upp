@@ -1,0 +1,11 @@
+file
+	arguments.c,
+	CMakeLists.txt,
+	host.c,
+	ihost.idl,
+	ihost_dispid.h,
+	main.c,
+	precomp.h,
+	rsrc.rc,
+	wscript.h;
+

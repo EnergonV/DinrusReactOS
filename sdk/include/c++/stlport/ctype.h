@@ -23,7 +23,7 @@
 
 #  if !defined (_STLP_OUTERMOST_HEADER_ID)
 #    define _STLP_OUTERMOST_HEADER_ID 0x219
-#    include <stl/_prolog.h>
+#    include "stl/_prolog.h"
 #  elif (_STLP_OUTERMOST_HEADER_ID == 0x219)
 #    define _STLP_DONT_POP_HEADER_ID
 #    define _STLP_CTYPE_H
@@ -102,7 +102,7 @@ __inline int (iswascii)(int c) { return ((unsigned)(c) < 0x80); }
 
 #  if (_STLP_OUTERMOST_HEADER_ID == 0x219)
 #    if ! defined (_STLP_DONT_POP_HEADER_ID)
-#      include <stl/_epilog.h>
+#      include "stl/_epilog.h"
 #      undef  _STLP_OUTERMOST_HEADER_ID
 #    else
 #      undef  _STLP_DONT_POP_HEADER_ID

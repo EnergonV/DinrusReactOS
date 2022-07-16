@@ -1,0 +1,14 @@
+description "\377B";
+
+uses
+	dll\directx\wine\amstream,
+	dll\directx\wine\d3d8,
+	dll\directx\wine\d3d9,
+	dll\directx\wine\d3dcompiler_43,
+	dll/directx/wine/d3drm;
+
+file
+	.clang-format,
+	CMakeLists.txt,
+	readme.txt;
+

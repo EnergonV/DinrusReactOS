@@ -1,0 +1,18 @@
+file
+	CMakeLists.txt,
+	d3drm.c,
+	d3drm.spec,
+	d3drm_main.c,
+	d3drm_private.h,
+	device.c,
+	face.c,
+	frame.c,
+	light.c,
+	material.c,
+	math.c,
+	meshbuilder.c,
+	precomp.h,
+	texture.c,
+	version.rc,
+	viewport.c;
+

@@ -1,0 +1,10 @@
+file
+	cache.c,
+	CMakeLists.txt,
+	dnsrslvr.c,
+	dnsrslvr.rc,
+	dnsrslvr.spec,
+	hostsfile.c,
+	precomp.h,
+	rpcserver.c;
+

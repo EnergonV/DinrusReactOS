@@ -36,27 +36,27 @@
 
 
 #ifndef _STLP_INTERNAL_ALGOBASE_H
-#  include <stl/_algobase.h>
+#  include "_algobase.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ALLOC_H
-#  include <stl/_alloc.h>
+#  include "_alloc.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ITERATOR_H
-#  include <stl/_iterator.h>
+#  include "_iterator.h"
 #endif
 
 #ifndef _STLP_INTERNAL_UNINITIALIZED_H
-#  include <stl/_uninitialized.h>
+#  include "_uninitialized.h"
 #endif
 
 #ifndef _STLP_RANGE_ERRORS_H
-#  include <stl/_range_errors.h>
+#  include "_range_errors.h"
 #endif
 
 #ifndef _STLP_INTERNAL_STRING_H
-#  include <stl/_string.h>
+#  include "_string.h"
 #endif
 
 #define __BITS_PER_WORD (CHAR_BIT*sizeof(unsigned long))

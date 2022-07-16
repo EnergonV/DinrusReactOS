@@ -1,0 +1,7 @@
+file
+	CMakeLists.txt,
+	dxtn.spec,
+	txc_compress_dxtn.c,
+	txc_dxtn.h,
+	txc_fetch_dxtn.c;
+

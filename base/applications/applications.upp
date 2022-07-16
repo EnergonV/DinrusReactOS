@@ -1,0 +1,14 @@
+description "\377B";
+
+uses
+	base\applications\atactl,
+	base\applications\cacls,
+	base\applications\calc,
+	base\applications\charmap,
+	base\applications\charmap_new,
+	base\applications\clipbrd,
+	base\applications\cmdutils;
+
+file
+	CMakeLists.txt;
+

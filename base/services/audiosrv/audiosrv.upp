@@ -1,0 +1,12 @@
+file
+	audiosrv.h,
+	audiosrv.rc,
+	audiosrv.txt,
+	CMakeLists.txt,
+	debug.c,
+	main.c,
+	pnp.c,
+	pnp_list_lock.c,
+	pnp_list_manager.c,
+	services.c;
+

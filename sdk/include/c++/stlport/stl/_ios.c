@@ -19,15 +19,15 @@
 #define _STLP_IOS_C
 
 #ifndef _STLP_INTERNAL_IOS_H
-# include <stl/_ios.h>
+# include "_ios.h"
 #endif
 
 #ifndef _STLP_INTERNAL_STREAMBUF
-# include <stl/_streambuf.h>
+# include "_streambuf.h"
 #endif
 
 #ifndef _STLP_INTERNAL_NUMPUNCT_H
-# include <stl/_numpunct.h>
+# include "_numpunct.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

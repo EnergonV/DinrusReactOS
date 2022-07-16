@@ -1,0 +1,26 @@
+description "\377B";
+
+uses
+	base\system\autochk,
+	base\system\bootok,
+	base\system,
+	base\system/chkdsk,
+	base\system\diskpart,
+	base\system\dllhost,
+	base\system\expand,
+	base\system\format,
+	base\system\logonui,
+	base\system\lsass,
+	base\system\msiexec,
+	base\system\regsvr32,
+	base\system\rundll32,
+	base\system\runonce,
+	base\system\services,
+	base\system\smss,
+	base\system\subst,
+	base\system\userinit,
+	base\system\winlogon;
+
+file
+	CMakeLists.txt;
+

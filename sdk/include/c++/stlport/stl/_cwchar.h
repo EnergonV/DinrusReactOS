@@ -18,7 +18,7 @@
 
 #if defined (_STLP_WCE_EVC3)
 #  ifndef _STLP_INTERNAL_MBSTATE_T
-#    include <stl/_mbstate_t.h>
+#    include "_mbstate_t.h"
 #  endif
 #else
 #  if defined (__GNUC__)

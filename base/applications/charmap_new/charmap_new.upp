@@ -1,0 +1,21 @@
+file
+	lang\en-US.rc,
+	lang\et-EE.rc,
+	lang\it-IT.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\tr-TR.rc,
+	Cell.cpp,
+	Cell.h,
+	charmap.cpp,
+	charmap.rc,
+	CMakeLists.txt,
+	GridView.cpp,
+	GridView.h,
+	MainWindow.cpp,
+	MainWindow.h,
+	precomp.h,
+	resource.h,
+	res\charmap.ico,
+	lang\zh-CN.rc;
+

@@ -1,0 +1,5 @@
+file
+	cryptext.c,
+	precomp.h,
+	resource.h;
+

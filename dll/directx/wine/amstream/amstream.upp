@@ -1,0 +1,14 @@
+file
+	amstream.c,
+	amstream.spec,
+	amstream_classes.idl,
+	amstream_classes.rgs,
+	amstream_private.h,
+	audiodata.c,
+	CMakeLists.txt,
+	main.c,
+	mediastream.c,
+	mediastreamfilter.c,
+	precomp.h,
+	version.rc;
+

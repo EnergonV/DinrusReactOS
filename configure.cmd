@@ -33,7 +33,8 @@ if %ERRORLEVEL% == 0 (
 
 REM Set default generator
 set CMAKE_GENERATOR="Ninja"
-set CMAKE_ARCH=
+set CMAKE_ARCH=i386
+set ROS_ARCH=i386
 
 REM Detect presence of cmake
 cmd /c cmake --version 2>&1 | find "cmake version" > NUL || goto cmake_notfound

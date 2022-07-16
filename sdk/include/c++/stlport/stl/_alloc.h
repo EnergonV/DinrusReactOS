@@ -28,27 +28,27 @@
 #define _STLP_INTERNAL_ALLOC_H
 
 #ifndef _STLP_INTERNAL_CSTDDEF
-#  include <stl/_cstddef.h>
+#  include "_cstddef.h"
 #endif
 
 #ifndef _STLP_INTERNAL_CSTDLIB
-#  include <stl/_cstdlib.h>
+#  include "_cstdlib.h"
 #endif
 
 #ifndef _STLP_INTERNAL_CSTRING
-#  include <stl/_cstring.h>
+#  include "_cstring.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ALGOBASE_H
-#  include <stl/_algobase.h>
+#  include "_algobase.h"
 #endif
 
 #ifndef _STLP_INTERNAL_NEW_HEADER
-#  include <stl/_new.h>
+#  include "_new.h"
 #endif
 
 #ifndef _STLP_INTERNAL_CONSTRUCT_H
-#  include <stl/_construct.h>
+#  include "_construct.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

@@ -1,5 +1,5 @@
 #undef __MSVCRT__
-#include <psdk/ntverp.h>
+#include "../psdk/ntverp.h"
 
 /* DDK/IFS/NDK Headers */
 #define _NTSYSTEM_

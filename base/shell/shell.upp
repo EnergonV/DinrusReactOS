@@ -1,0 +1,12 @@
+description "\377B";
+
+uses
+	base\shell\cmd,
+	base\shell\explorer,
+	base\shell\filebrowser,
+	base\shell\progman,
+	base\shell\rshell;
+
+file
+	CMakeLists.txt;
+

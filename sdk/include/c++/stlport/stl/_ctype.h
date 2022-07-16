@@ -23,15 +23,15 @@
 #define _STLP_INTERNAL_CTYPE_H
 
 #ifndef _STLP_C_LOCALE_H
-#  include <stl/c_locale.h>
+#  include "c_locale.h"
 #endif
 
 #ifndef _STLP_INTERNAL_LOCALE_H
-#  include <stl/_locale.h>
+#  include "_locale.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ALGOBASE_H
-#  include <stl/_algobase.h>
+#  include "_algobase.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

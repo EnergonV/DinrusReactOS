@@ -1,0 +1,18 @@
+file
+	buffer.c,
+	CMakeLists.txt,
+	d3d8.spec,
+	d3d8_main.c,
+	d3d8_private.h,
+	device.c,
+	directx.c,
+	guid.c,
+	precomp.h,
+	shader.c,
+	surface.c,
+	swapchain.c,
+	texture.c,
+	version.rc,
+	vertexdeclaration.c,
+	volume.c;
+

@@ -1,0 +1,22 @@
+noblitz;
+
+uses
+	dll\win32,
+	dll\shellext,
+	dll\opengl,
+	dll\3rdparty,
+	dll\apisets,
+	dll/appcompat,
+	dll/cpl,
+	dll/directx,
+	dll\keyboard,
+	dll\nls,
+	dll\np,
+	dll\ntdll;
+
+file
+	CMakeLists.txt;
+
+mainconfig
+	"" = "DLL";
+

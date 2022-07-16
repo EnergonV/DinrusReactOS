@@ -1,0 +1,14 @@
+file
+	apistubs.c,
+	CMakeLists.txt,
+	dllmain.c,
+	glapi_x86.s,
+	glfuncs.h,
+	icd.h,
+	icdload.c,
+	opengl32.h,
+	opengl32.spec,
+	swimpl.c,
+	wgl.c,
+	wgl_font.c;
+

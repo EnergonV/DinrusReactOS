@@ -1,0 +1,20 @@
+file
+	buffer.c,
+	CMakeLists.txt,
+	d3d9.spec,
+	d3d9_main.c,
+	d3d9_private.h,
+	device.c,
+	directx.c,
+	guid.c,
+	precomp.h,
+	query.c,
+	shader.c,
+	stateblock.c,
+	surface.c,
+	swapchain.c,
+	texture.c,
+	version.rc,
+	vertexdeclaration.c,
+	volume.c;
+

@@ -1,0 +1,9 @@
+file
+	CMakeLists.txt,
+	genral.spec,
+	ignoredbgout.c,
+	ignorefreelib.c,
+	main.c,
+	shimtest.c,
+	themes.c;
+

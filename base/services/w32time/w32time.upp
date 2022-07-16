@@ -1,0 +1,7 @@
+file
+	CMakeLists.txt,
+	ntpclient.c,
+	w32time.c,
+	w32time.h,
+	w32time.spec;
+

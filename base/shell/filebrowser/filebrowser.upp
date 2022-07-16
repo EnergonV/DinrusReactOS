@@ -1,0 +1,8 @@
+file
+	browseui.sxs.manifest,
+	CMakeLists.txt,
+	filebrowser.c,
+	filebrowser.exe.manifest,
+	filebrowser.exe.regfree.manifest,
+	filebrowser.rc;
+

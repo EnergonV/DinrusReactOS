@@ -25,7 +25,7 @@
  */
 
 #ifndef _STLP_INTERNAL_CONSTRUCT_H
-#  include <stl/_construct.h>
+#  include "_construct.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

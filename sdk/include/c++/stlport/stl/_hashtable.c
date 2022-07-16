@@ -25,7 +25,7 @@
 #define _STLP_HASHTABLE_C
 
 #ifndef _STLP_INTERNAL_HASHTABLE_H
-#  include <stl/_hashtable.h>
+#  include "_hashtable.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

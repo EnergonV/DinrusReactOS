@@ -185,9 +185,9 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 #define __int16 short
 #define __int32 int
 #define __int64 long long
-#ifdef _WIN64
-   typedef int __int128 __attribute__ ((mode (TI)));
-# endif
+//#ifdef _WIN64
+  // typedef int __int128 __attribute__ ((mode (TI)));
+//# endif
 # define __ptr32
 # define __ptr64
 # if ( __MINGW_GNUC_PREREQ(4, 3)  &&  __STDC_VERSION__ >= 199901L)

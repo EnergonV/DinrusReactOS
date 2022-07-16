@@ -4,7 +4,7 @@
  * allow reentrancy of this header.
  */
 
-#include <stl/_cprolog.h>
+#include "_cprolog.h"
 
 /* Get all debug things, potentially only empty macros if none of
  * the debug features available in user config file is activated. */

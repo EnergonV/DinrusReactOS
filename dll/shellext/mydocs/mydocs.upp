@@ -1,0 +1,14 @@
+file
+	CMakeLists.txt,
+	CMyDocsDropHandler.cpp,
+	CMyDocsDropHandler.hpp,
+	mydocs.cpp,
+	mydocs.rc,
+	mydocs.spec,
+	mydocs_version.h,
+	mydocs_version.rc,
+	precomp.hpp,
+	lang\en-US.rc,
+	res\mydocs.rgs,
+	resource.h;
+

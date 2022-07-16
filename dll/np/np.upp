@@ -1,0 +1,8 @@
+description "\377B";
+
+uses
+	dll\np\nfs;
+
+file
+	CMakeLists.txt;
+

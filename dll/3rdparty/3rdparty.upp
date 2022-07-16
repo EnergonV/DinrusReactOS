@@ -1,0 +1,14 @@
+description "\377B";
+
+uses
+	dll\3rdparty\dxtn,
+	dll\3rdparty\libjpeg,
+	dll/3rdparty/libpng,
+	dll\3rdparty\libtiff,
+	dll\3rdparty\libtirpc,
+	dll/3rdparty/libxslt,
+	dll/3rdparty/mbedtls;
+
+file
+	CMakeLists.txt;
+

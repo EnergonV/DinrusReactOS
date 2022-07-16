@@ -1,0 +1,13 @@
+description "\377B";
+
+noblitz;
+
+uses
+	dll\opengl\glu32,
+	dll\opengl\mesa,
+	dll\opengl\opengl32;
+
+file
+	CMakeLists.txt,
+	Mesa_for_ReactOS.txt;
+

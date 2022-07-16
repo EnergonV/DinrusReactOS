@@ -1,0 +1,17 @@
+file
+	CMakeLists.txt,
+	resource.h,
+	tree.c,
+	lang\de-DE.rc,
+	lang\en-US.rc,
+	lang\et-EE.rc,
+	lang\fr-FR.rc,
+	lang\it-IT.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\ru-RU.rc,
+	lang\tr-TR.rc,
+	lang\zh-CN.rc,
+	lang\zh-TW.rc,
+	tree.rc;
+

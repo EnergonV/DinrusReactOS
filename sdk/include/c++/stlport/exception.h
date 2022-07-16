@@ -18,7 +18,7 @@
 
 #if !defined (_STLP_OUTERMOST_HEADER_ID)
 #  define _STLP_OUTERMOST_HEADER_ID 0x824
-#  include <stl/_prolog.h>
+#  include "stl/_prolog.h"
 #endif
 
 #if defined (__BORLANDC__) || defined (_MSC_VER)
@@ -32,7 +32,7 @@
 #endif
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x824)
-#  include <stl/_epilog.h>
+#  include "stl/_epilog.h"
 #  undef  _STLP_OUTERMOST_HEADER_ID
 #endif
 

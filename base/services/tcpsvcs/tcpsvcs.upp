@@ -1,0 +1,14 @@
+file
+	chargen.c,
+	CMakeLists.txt,
+	daytime.c,
+	discard.c,
+	echo.c,
+	log.c,
+	qotd.c,
+	quotes,
+	skelserver.c,
+	tcpsvcs.c,
+	tcpsvcs.h,
+	tcpsvcs.rc;
+

@@ -1,0 +1,14 @@
+file
+	at.c,
+	at.rc,
+	CMakeLists.txt,
+	lang\de-DE.rc,
+	lang\en-US.rc,
+	lang\it-IT.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\ru-RU.rc,
+	lang\tr-TR.rc,
+	lang\zh-CN.rc,
+	resource.h;
+

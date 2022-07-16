@@ -1,0 +1,15 @@
+uses
+	base/system,
+	base/applications,
+	base/services,
+	base/setup,
+	base/shell;
+
+file
+	CMakeLists.txt;
+	
+	
+mainconfig
+
+    ""="";
+

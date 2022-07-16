@@ -27,7 +27,7 @@
 // std, as called for by the draft C++ standard.
 
 #ifndef _STLP_INTERNAL_CMATH
-#  include <stl/_cmath.h>
+#  include "_cmath.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

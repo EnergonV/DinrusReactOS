@@ -1,0 +1,7 @@
+file
+	CMakeLists.txt,
+	dcomlaunch.c,
+	dcomlaunch.rc,
+	dcomlaunch.spec,
+	network.c;
+

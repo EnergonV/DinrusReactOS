@@ -1,0 +1,10 @@
+file
+	CMakeLists.txt,
+	eventlog.c,
+	eventlog.h,
+	eventlog.rc,
+	eventsource.c,
+	file.c,
+	logport.c,
+	rpc.c;
+

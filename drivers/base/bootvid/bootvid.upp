@@ -1,0 +1,18 @@
+file
+	bootvid.rc,
+	common.c,
+	bootvid.spec,
+	fontdata.c,
+	precomp.h,
+	arm readonly separator,
+	arm\arm.h,
+	arm\bootvid.c,
+	i386 readonly separator,
+	i386\pc\bootdata.c,
+	i386\pc\bootvid.c,
+	i386\pc\cmdcnst.h,
+	i386\pc\pc.h,
+	i386\pc\vga.c,
+	i386\pc\vga.h,
+	CMakeLists.txt;
+

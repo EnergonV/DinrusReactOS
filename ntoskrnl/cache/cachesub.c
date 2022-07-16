@@ -9,7 +9,7 @@
 
 /* INCLUDES *******************************************************************/
 
-#include <ntoskrnl.h>
+#include "ntoskrnl.h"
 #include "newcc.h"
 #include "section/newmm.h"
 #define NDEBUG

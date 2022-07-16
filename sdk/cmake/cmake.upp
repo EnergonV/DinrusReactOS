@@ -1,0 +1,22 @@
+file
+	baseaddress.cmake,
+	baseaddress_dwarf.cmake,
+	baseaddress_msvc.cmake,
+	bison-flex.cmake,
+	CMakeMacros.cmake,
+	compilerflags.cmake,
+	config-amd64.cmake,
+	config-arm.cmake,
+	config.cmake,
+	gcc.cmake,
+	host-tools.cmake,
+	host-tools.in,
+	init-section.lds,
+	localization.cmake,
+	midl-support.cmake,
+	msvc.cmake,
+	widl-support.cmake,
+	Compiler readonly separator,
+	Compiler\VISUAL-ASM.cmake,
+	writing_CmakeLists_for_ReactOS.txt;
+

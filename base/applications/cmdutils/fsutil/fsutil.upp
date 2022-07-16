@@ -1,0 +1,11 @@
+file
+	CMakeLists.txt,
+	common.c,
+	dirty.c,
+	fsinfo.c,
+	fsutil.c,
+	fsutil.h,
+	fsutil.rc,
+	hardlink.c,
+	volume.c;
+

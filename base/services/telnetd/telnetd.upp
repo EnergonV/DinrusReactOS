@@ -1,0 +1,9 @@
+file
+	CMakeLists.txt,
+	serviceentry.c,
+	syslog.c,
+	syslog.h,
+	telnetd.c,
+	telnetd.h,
+	telnetd.rc;
+

@@ -31,24 +31,24 @@
 #define _STLP_INTERNAL_ALGO_H
 
 #ifndef _STLP_INTERNAL_ALGOBASE_H
-#  include <stl/_algobase.h>
+#  include "_algobase.h"
 #endif
 
 #ifndef _STLP_INTERNAL_HEAP_H
-#  include <stl/_heap.h>
+#  include "_heap.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ITERATOR_H
-#  include <stl/_iterator.h>
+#  include "_iterator.h"
 #endif
 
 #ifndef _STLP_INTERNAL_FUNCTION_BASE_H
-#  include <stl/_function_base.h>
+#  include "_function_base.h"
 #endif
 
 #if defined (__SUNPRO_CC) && !defined (_STLP_INTERNAL_CSTDIO)
 // remove() conflict
-#  include <stl/_cstdio.h>
+#  include "_cstdio.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

@@ -1,0 +1,5 @@
+file
+	CMakeLists.txt,
+	lsass.c,
+	lsass.rc;
+

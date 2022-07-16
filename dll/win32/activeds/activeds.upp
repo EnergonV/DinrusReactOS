@@ -1,0 +1,7 @@
+file
+	activeds.spec,
+	activeds_main.c,
+	CMakeLists.txt,
+	precomp.h,
+	stubs.c;
+

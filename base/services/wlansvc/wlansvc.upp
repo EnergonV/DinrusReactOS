@@ -1,0 +1,7 @@
+file
+	CMakeLists.txt,
+	precomp.h,
+	rpcserver.c,
+	wlansvc.c,
+	wlansvc.rc;
+

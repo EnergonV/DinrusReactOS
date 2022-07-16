@@ -1,0 +1,8 @@
+file
+	CMakeLists.txt,
+	IdnToAscii.c,
+	IdnToUnicode.c,
+	nameprep.c,
+	normaliz.spec,
+	normalize.c;
+

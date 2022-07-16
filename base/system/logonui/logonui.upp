@@ -1,0 +1,14 @@
+file
+	logonui.c,
+	logonui.h,
+	logonui.rc,
+	NT5design.c,
+	NT6design.c,
+	res\100.bmp,
+	res\123.bmp,
+	res\125.bmp,
+	res\126.bmp,
+	res\unknown.bmp,
+	res\unknown2.bmp,
+	resource.h;
+

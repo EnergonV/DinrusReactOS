@@ -769,7 +769,10 @@ typedef struct _PP_LOOKASIDE_LIST
 // Kernel Memory Node
 //
 #include <pshpack1.h>
-typedef struct _KNODE
+
+#if defined _M_AMD64
+typedef struct DECLSPEC_ALIGN(16) _KNODE
+
 {
     SLIST_HEADER DeadStackList;
     SLIST_HEADER PfnDereferenceSListHead;
@@ -785,6 +788,25 @@ typedef struct _KNODE
     ULONG FreeCount[2];
     struct _SINGLE_LIST_ENTRY *PfnDeferredList;
 } KNODE, *PKNODE;
+#else
+typedef struct _KNODE
+
+{
+    SLIST_HEADER DeadStackList;
+    SLIST_HEADER PfnDereferenceSListHead;
+    KAFFINITY ProcessorMask;
+    UCHAR Color;
+    UCHAR Seed;
+    UCHAR NodeNumber;
+    struct _flags {
+        UCHAR Removable : 1;
+        UCHAR Fill : 7;
+    } Flags;
+    ULONG MmShiftedColor;
+    ULONG FreeCount[2];
+    struct _SINGLE_LIST_ENTRY *PfnDeferredList;
+} KNODE, *PKNODE;
+#endif
 #include <poppack.h>
 
 //

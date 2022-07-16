@@ -1,0 +1,7 @@
+file
+	CMakeLists.txt,
+	odbccp32.c,
+	odbccp32.h,
+	odbccp32.rc,
+	odbccp32.spec;
+

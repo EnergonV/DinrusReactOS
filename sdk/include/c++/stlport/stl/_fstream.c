@@ -19,11 +19,11 @@
 #define _STLP_FSTREAM_C
 
 #ifndef _STLP_INTERNAL_FSTREAM_H
-#  include <stl/_fstream.h>
+#  include "_fstream.h"
 #endif
 
 #ifndef _STLP_INTERNAL_LIMITS
-#  include <stl/_limits.h>
+#  include "_limits.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

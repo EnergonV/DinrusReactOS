@@ -285,6 +285,21 @@ typedef enum
 //
 #define NUMBER_POOL_LOOKASIDE_LISTS 32
 
+//Declcpec for amd64
+#ifndef DECLSPEC_ALIGN
+#ifndef __WIDL__
+#if defined(_MSC_VER) && (_MSC_VER >= 1300) && !defined(MIDL_PASS)
+#define DECLSPEC_ALIGN(x) __declspec(align(x))
+#elif defined(__GNUC__)
+#define DECLSPEC_ALIGN(x) __attribute__ ((__aligned__ (x)))
+#else
+#define DECLSPEC_ALIGN(x) /*__declspec (align (x))*/
+#endif
+#else
+#define DECLSPEC_ALIGN(x)
+#endif
+#endif /* DECLSPEC_ALIGN */
+
 //
 // Structure for CPUID
 //
@@ -551,8 +566,8 @@ typedef struct _REQUEST_MAILBOX
 //
 // Processor Region Control Block
 //
-#pragma pack(push,4)
-typedef struct _KPRCB
+//#pragma pack(push,4)
+typedef DECLSPEC_ALIGN(16) struct _KPRCB
 {
     ULONG MxCsr;
 #if (NTDDI_VERSION >= NTDDI_LONGHORN)
@@ -850,7 +865,7 @@ typedef struct _KPRCB
 //
 // Processor Control Region
 //
-typedef struct _KIPCR
+typedef DECLSPEC_ALIGN(16) struct _KIPCR
 {
     union
     {
@@ -892,7 +907,7 @@ typedef struct _KIPCR
     ULONG ContextSwitches;
 
 } KIPCR, *PKIPCR;
-#pragma pack(pop)
+//#pragma pack(pop)
 
 //
 // TSS Definition

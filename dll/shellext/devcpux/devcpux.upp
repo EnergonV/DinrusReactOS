@@ -1,0 +1,15 @@
+file
+	CMakeLists.txt,
+	devcpux.spec,
+	processor.c,
+	processor.rc,
+	lang\en-US.rc,
+	lang\fr-FR.rc,
+	lang\hi-IN.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\ru-RU.rc,
+	lang\zh-CN.rc,
+	lang\zh-TW.rc,
+	resource.h;
+

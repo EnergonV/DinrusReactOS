@@ -1,0 +1,9 @@
+file
+	ACPPage.cpp,
+	CEditCompatModes.cpp,
+	CLayerStringList.hpp,
+	CLayerUIPropPage.cpp,
+	CLayerUIPropPage.hpp,
+	precomp.h,
+	resource.h;
+

@@ -21,7 +21,7 @@
 
 #ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID 0x4028
-#  include <stl/_prolog.h>
+#  include "stl/_prolog.h"
 #endif
 
 #ifdef _STLP_PRAGMA_ONCE
@@ -35,10 +35,10 @@
 #  error The hash_map and hash_multimap class are STLport extensions.
 #endif
 
-#include <stl/_hash_map.h>
+#include "stl/_hash_map.h"
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x4028)
-#  include <stl/_epilog.h>
+#  include "stl/_epilog.h"
 #  undef _STLP_OUTERMOST_HEADER_ID
 #endif
 

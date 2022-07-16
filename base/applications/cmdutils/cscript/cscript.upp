@@ -1,0 +1,5 @@
+file
+	CMakeLists.txt,
+	ihost.idl,
+	rsrc.rc;
+

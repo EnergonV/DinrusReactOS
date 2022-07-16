@@ -17,7 +17,7 @@
 #define _STLP_INTERNAL_CWCTYPE
 
 #if defined (__BORLANDC__) && !defined (_STLP_INTERNAL_CCTYPE)
-#  include <stl/_cctype.h>
+#  include "_cctype.h"
 #endif
 
 #if !defined (_STLP_WCE_EVC3)

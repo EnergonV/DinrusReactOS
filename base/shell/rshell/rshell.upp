@@ -1,0 +1,7 @@
+file
+	CMakeLists.txt,
+	CQuickLaunchBand.cpp,
+	CQuickLaunchBand.h,
+	misc.cpp,
+	rshell.spec;
+

@@ -1,0 +1,11 @@
+file
+	CMakeLists.txt,
+	epm.idl,
+	epmp.c,
+	irot.idl,
+	irotp.c,
+	precomp.h,
+	rpcss.rc,
+	rpcss_main.c,
+	setup.c;
+

@@ -1,0 +1,7 @@
+file
+	CMakeLists.txt,
+	wuauserv.c,
+	wuauserv.h,
+	wuauserv.rc,
+	wuauserv.spec;
+

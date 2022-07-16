@@ -1,0 +1,37 @@
+description "\377B";
+
+options(WIN64) -I.\include;
+
+file
+	csr readonly separator,
+	csr\api.c,
+	csr\capture.c,
+	csr\connect.c,
+	dbg readonly separator,
+	dbg\dbgui.c,
+	def readonly separator,
+	def\ntdll.rc,
+	def\ntdll.spec,
+	dispatch readonly separator,
+	dispatch\i386\dispatch.S,
+	dispatch\arm\stubs_asm.s,
+	dispatch\amd64\dispatch.S,
+	dispatch\amd64\stubs.c,
+	dispatch\dispatch.c,
+	etw readonly separator,
+	etw\trace.c,
+	include readonly separator,
+	include\ntdll.h,
+	include\ntdllp.h,
+	ldr readonly separator,
+	ldr\ldrapi.c,
+	ldr\ldrinit.c,
+	ldr\ldrpe.c,
+	ldr\ldrutils.c,
+	ldr\verifier.c,
+	rtl readonly separator,
+	rtl\libsupp.c,
+	rtl\uilist.c,
+	rtl\version.c,
+	CMakeLists.txt;
+

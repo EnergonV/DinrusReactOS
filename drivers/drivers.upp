@@ -1,0 +1,10 @@
+uses
+	drivers\base;
+
+file
+	CMakeLists.txt;
+
+	
+mainconfig
+
+    ""="";

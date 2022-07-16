@@ -27,13 +27,13 @@
 
 #ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID 0x22
-#  include <stl/_prolog.h>
+#  include "stl/_prolog.h"
 #  define _STLP_DEQUE
 #endif
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x22)
 #  ifndef _STLP_INTERNAL_DEQUE_H
-#    include <stl/_deque.h>
+#    include "stl/_deque.h"
 #  endif
 #endif
 
@@ -46,7 +46,7 @@
 #endif
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x22)
-#  include <stl/_epilog.h>
+#  include "stl/_epilog.h"
 #  undef _STLP_OUTERMOST_HEADER_ID
 #endif
 

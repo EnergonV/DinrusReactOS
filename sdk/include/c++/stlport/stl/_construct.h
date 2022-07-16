@@ -31,23 +31,23 @@
 #define _STLP_INTERNAL_CONSTRUCT_H
 
 #if !defined (_STLP_DEBUG_UNINITIALIZED) && !defined (_STLP_INTERNAL_CSTRING)
-#  include <stl/_cstring.h>
+#  include "_cstring.h"
 #endif
 
 #ifndef _STLP_INTERNAL_NEW
-#  include <stl/_new.h>
+#  include "_new.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ITERATOR_BASE_H
-#  include <stl/_iterator_base.h>
+#  include "_iterator_base.h"
 #endif
 
 #ifndef _STLP_TYPE_TRAITS_H
-#  include <stl/type_traits.h>
+#  include "type_traits.h"
 #endif
 
 #if !defined (_STLP_MOVE_CONSTRUCT_FWK_H) && !defined (_STLP_NO_MOVE_SEMANTIC)
-#  include <stl/_move_construct_fwk.h>
+#  include "_move_construct_fwk.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

@@ -1,0 +1,9 @@
+file
+	CMakeLists.txt,
+	install.c,
+	precomp.h,
+	rpcserver.c,
+	umpnpmgr.c,
+	umpnpmgr.rc,
+	umpnpmgr.spec;
+

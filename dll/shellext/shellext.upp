@@ -1,0 +1,23 @@
+description "\377B";
+
+noblitz;
+
+uses
+	dll/shellext/acppage,
+	dll\shellext\cryptext,
+	dll\shellext\deskadp,
+	dll\shellext\deskmon,
+	dll\shellext\devcpux,
+	dll\shellext\fontext,
+	dll\shellext\mydocs,
+	dll/shellext/netplwiz,
+	dll\shellext\netshell,
+	dll\shellext\ntobjshex,
+	dll/shellext/sendmail,
+	dll\shellext\shellbtrfs,
+	dll/shellext/stobject,
+	dll\shellext\zipfldr;
+
+file
+	CMakeLists.txt;
+

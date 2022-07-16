@@ -1,0 +1,8 @@
+file
+	CMakeLists.txt,
+	msiexec.c,
+	msiexec.ico,
+	precomp.h,
+	rsrc.rc,
+	service.c;
+

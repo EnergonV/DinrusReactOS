@@ -18,10 +18,10 @@
 
 #ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID 0x2031
-#  include <stl/_prolog.h>
+#  include "stl/_prolog.h"
 #endif
 
-#include <stl/_ioserr.h>
+#include "stl/_ioserr.h"
 
 #include <iomanip>
 
@@ -42,7 +42,7 @@ using _STLP_STD::setw;
 #include <iostream.h>
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x2031)
-#  include <stl/_epilog.h>
+#  include "stl/_epilog.h"
 #  undef _STLP_OUTERMOST_HEADER_ID
 #endif
 

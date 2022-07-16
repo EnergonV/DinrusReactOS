@@ -1,0 +1,15 @@
+file
+	CMakeLists.txt,
+	comp.c,
+	comp.rc,
+	lang\en-US.rc,
+	lang\et-EE.rc,
+	lang\fr-FR.rc,
+	lang\it-IT.rc,
+	lang\pl-PL.rc,
+	lang\ro-RO.rc,
+	lang\ru-RU.rc,
+	lang\tr-TR.rc,
+	lang\zh-CN.rc,
+	resource.h;
+

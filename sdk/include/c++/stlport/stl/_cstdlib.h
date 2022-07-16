@@ -166,7 +166,7 @@ inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return __x < 0 ? -__x : __x; 
  *         The first 'using ::abs' call is going to be in the other header.
  */
 #ifndef _STLP_INTERNAL_CMATH
-#  include <stl/_cmath.h>
+#  include "_cmath.h"
 #endif
 
 #if defined (_STLP_IMPORT_VENDOR_CSTD) && !defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)

@@ -1,3 +1,0 @@
-mingw32-make.exe: *** No targets specified and no makefile found.  Stop.
-
-Total Build Time: 00:00:03

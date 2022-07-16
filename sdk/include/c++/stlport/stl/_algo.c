@@ -27,11 +27,11 @@
 #define _STLP_ALGO_C
 
 #if !defined (_STLP_INTERNAL_ALGO_H)
-#  include <stl/_algo.h>
+#  include "_algo.h"
 #endif
 
 #ifndef _STLP_INTERNAL_TEMPBUF_H
-#  include <stl/_tempbuf.h>
+#  include "_tempbuf.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

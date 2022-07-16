@@ -1,0 +1,9 @@
+description "\377B";
+
+uses
+	dll\directx\d3d8thk,
+	dll\directx\wine;
+
+file
+	CMakeLists.txt;
+

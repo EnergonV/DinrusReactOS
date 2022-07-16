@@ -31,31 +31,31 @@
 #define _STLP_INTERNAL_ALGOBASE_H
 
 #ifndef _STLP_INTERNAL_CSTDDEF
-#  include <stl/_cstddef.h>
+#  include "_cstddef.h"
 #endif
 
 #ifndef _STLP_INTERNAL_CSTRING
-#  include <stl/_cstring.h>
+#  include "_cstring.h"
 #endif
 
 #ifndef _STLP_CLIMITS
-#  include <climits>
+#  include "../climits"
 #endif
 
 #ifndef _STLP_INTERNAL_CSTDLIB
-#  include <stl/_cstdlib.h>
+#  include "_cstdlib.h"
 #endif
 
 #ifndef _STLP_INTERNAL_PAIR_H
-#  include <stl/_pair.h>
+#  include "_pair.h"
 #endif
 
 #ifndef _STLP_INTERNAL_ITERATOR_BASE_H
-#  include <stl/_iterator_base.h>
+#  include "_iterator_base.h"
 #endif
 
 #ifndef _STLP_TYPE_TRAITS_H
-#  include <stl/type_traits.h>
+#  include "type_traits.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

@@ -1,0 +1,13 @@
+description "\377B";
+
+noblitz;
+
+uses
+	dll\win32\acledit,
+	dll\win32\aclui,
+	dll\win32\activeds,
+	dll\win32\actxprxy;
+
+file
+	CMakeLists.txt;
+

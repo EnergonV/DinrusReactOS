@@ -18,7 +18,7 @@
 
 #ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID 0x105
-#  include <stl/_prolog.h>
+#  include "<stl/_prolog.h"
 #endif
 
 #ifndef _STLP_WCE
@@ -44,7 +44,7 @@ _STLP_END_NAMESPACE
 #endif
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x105 )
-#  include <stl/_epilog.h>
+#  include "stl/_epilog.h"
 #  undef _STLP_OUTERMOST_HEADER_ID
 #endif
 

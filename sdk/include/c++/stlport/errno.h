@@ -15,7 +15,7 @@
 
 #if !defined (_STLP_OUTERMOST_HEADER_ID)
 #  define _STLP_OUTERMOST_HEADER_ID 0x205
-#  include <stl/_cprolog.h>
+#  include "stl/_cprolog.h"
 #elif (_STLP_OUTERMOST_HEADER_ID == 0x205) && !defined (_STLP_DONT_POP_HEADER_ID)
 #  define _STLP_DONT_POP_HEADER_ID
 #endif
@@ -59,7 +59,7 @@ _STLP_END_NAMESPACE
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x205)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)
-#    include <stl/_epilog.h>
+#    include "stl/_epilog.h"
 #    undef  _STLP_OUTERMOST_HEADER_ID
 #  endif
 #  undef  _STLP_DONT_POP_HEADER_ID

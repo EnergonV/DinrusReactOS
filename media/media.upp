@@ -1,0 +1,9 @@
+file
+	CMakeLists.txt,
+	forwardcompatible.manifest,
+	systemcompatible.manifest;
+
+	
+mainconfig
+
+    ""="";

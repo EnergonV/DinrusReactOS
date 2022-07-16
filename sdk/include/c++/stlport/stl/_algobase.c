@@ -26,11 +26,11 @@
 #define _STLP_ALGOBASE_C
 
 #ifndef _STLP_INTERNAL_ALGOBASE_H
-#  include <stl/_algobase.h>
+#  include "_algobase.h"
 #endif
 
 #ifndef _STLP_INTERNAL_FUNCTION_BASE_H
-#  include <stl/_function_base.h>
+#  include "_function_base.h"
 #endif
 
 _STLP_BEGIN_NAMESPACE

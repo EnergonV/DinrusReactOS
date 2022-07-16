@@ -1,0 +1,6 @@
+file
+	beep.c,
+	beep.rc,
+	beep_reg.inf,
+	CMakeLists.txt;
+
